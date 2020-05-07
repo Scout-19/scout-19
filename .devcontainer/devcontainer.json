@@ -1,0 +1,12 @@
+{
+    "name": "remote dev",
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+    "service": "node",
+    "workspaceFolder": "/app",
+    "shutdownAction": "stopCompose",
+    "extensions": [
+        "octref.vetur"
+    ]
+}
