@@ -2,10 +2,8 @@
   <div id="app">
     <v-navigation-drawer
       color="primary"
-      absolute
       dark
-      :permanent="true"
-      expand-on-hover
+      app
     >
       <v-list
         dense
@@ -24,7 +22,7 @@
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title>{{item.title}}</v-list-item-title>
             </v-list-item-content>
             
           </v-list-item>
@@ -33,6 +31,7 @@
       </v-list>
 
     </v-navigation-drawer>
+
   </div>
 </template>
 

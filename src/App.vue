@@ -1,6 +1,17 @@
 <template>
   <v-app>
-    <SideBar :items="items"/>
+
+    <v-row>
+      <SideBar :items="items"/>
+
+      <v-content>
+        <v-container fluid class='pa-10'>
+          <router-view/>
+        </v-container>
+      </v-content>
+
+    </v-row>
+
   </v-app>
 </template>
 
