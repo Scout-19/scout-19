@@ -56,7 +56,7 @@
 
         <!-- <v-row v-if="selected >= 0" style="position: fixed; bottom: 0px"> -->
         <v-row v-if="selected >= 0">
-          <v-text-field v-model="input" append-icon="mdi-send"></v-text-field>
+          <v-text-field v-model="input" append-icon="mdi-send" @click:append="submit"></v-text-field>
         </v-row>
 
       </v-col>
@@ -111,6 +111,15 @@ export default {
       return (this.selected < 0) ? {} : this.chatrooms[this.selected].user
     }
   },
+
+  methods: {
+    submit: function() {
+      if( this.input.length > 0 ) {
+        console.log("submit " + this.input)
+        this.input = ""
+      }
+    }
+  }
 
 }
 </script>

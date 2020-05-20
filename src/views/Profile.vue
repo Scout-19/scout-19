@@ -16,19 +16,28 @@
       weight='60'
       :dominant='{ hand: "右", leg: "左" }'
     />
+    <Career
+      class='pa-5'
+      :careers="[
+        {start: {year: 2000, month: 4, day: 1}, end: {year: 2003, month: 3, day: 31}, content: '〇〇小学校でフォワード'},
+        {start: {year: 2003, month: 4, day: 1}, end: {year: 2006, month: 3, day: 31}, content: '△△中学校でフォワード'},
+      ]"
+    />
   </div>
 </template>
 
 <script>
 import BasicProfile from '@/components/BasicProfile.vue'
 import PlayerProfile from '@/components/PlayerProfile.vue'
+import Career from '@/components/Career.vue'
 
 export default {
   name: 'Profile',
 
   components: {
     BasicProfile,
-    PlayerProfile
+    PlayerProfile,
+    Career
   }
 
 }
