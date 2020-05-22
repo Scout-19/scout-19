@@ -29,6 +29,7 @@
 <script>
 import BasicProfile from '@/components/BasicProfile.vue'
 import PlayerProfile from '@/components/PlayerProfile.vue'
+import firestore from '@/firebase/firestore'
 import Career from '@/components/Career.vue'
 
 export default {
@@ -38,7 +39,22 @@ export default {
     BasicProfile,
     PlayerProfile,
     Career
-  }
+  },
+  methods: {
+  window:onload = function() {
+   // read profile from database
+   var uid = 'dbHIC56klkQ40fkHXYV5g3uMP1J2'
+   var test = firestore.collection('users').doc(uid).collection('profile').doc('public');
+   test.get().then(function(doc) {
+      if (doc.exists) {
+        console.log("Document data:", doc.data());
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    })
+   },
+}
 
 }
 </script>
