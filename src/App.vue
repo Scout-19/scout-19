@@ -1,52 +1,32 @@
 <template>
   <v-app>
 
-    <v-row>
-      <SideBar :items="items"/>
-
-      <v-content>
-        <v-container fluid class='pa-10'>
-          <router-view/>
-        </v-container>
-      </v-content>
-
-    </v-row>
+    <TopPage v-if="drawTopPage"/>
+    <UserPage v-else/>
 
   </v-app>
 </template>
 
 <script>
-import SideBar from '@/components/SideBar'
+import TopPage from '@/views/TopPage'
+import UserPage from '@/views/UserPage'
 
 export default {
   name: 'App',
 
   components: {
-    SideBar,
+    TopPage,
+    UserPage
   },
 
   data: () => ({
-    account: 'player',
-    items_table: {
-      player: [
-          { title: 'プロフィール', icon: 'mdi-account', route: 'Profile' },
-          { title: 'メッセージ', icon: 'mdi-email', route: 'Message' },
-          { title: 'チーム検索', icon: 'mdi-school', route: 'Search' },
-          { title: '設定', icon: 'mdi-cog', route: 'Setting' },
-      ],
-      scoutman: [
-          { title: 'プロフィール', icon: 'mdi-account', route: 'Profile' },
-          { title: 'メッセージ', icon: 'mdi-email', route: 'Message' },
-          { title: 'プレイヤー検索', icon: 'mdi-charity', route: 'Search' },
-          { title: '設定', icon: 'mdi-cog', route: 'Setting' },
-      ],
-    }
+    toppage_route: ['About', 'Login', 'Signup']
   }),
 
   computed: {
-    items: function() {
-      return ( this.account == 'player' ) ? this.items_table.player : this.items_table.scoutman
-    },
-  },
+    drawTopPage: function() {
+      return this.toppage_route.indexOf(this.$router.currentRoute.name) >= 0
+    }
+  }
 };
 </script>
