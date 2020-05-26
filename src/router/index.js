@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import About from '@/components/routes/About.vue'
-import Login from '@/components/routes/Login.vue'
-import Signup from '@/components/routes/Signup.vue'
+import About from '@/router/routes/About'
+import Login from '@/router/routes/Login'
+import Signup from '@/router/routes/Signup'
 
-import Profile from '@/components/routes/Profile.vue'
-import Message from '@/components/routes/Message.vue'
-import Search from '@/components/routes/Search.vue'
-import Setting from '@/components/routes/Setting.vue'
+import Profile from '@/router/routes/Profile'
+import Message from '@/router/routes/Message'
+import Search from '@/router/routes/Search'
+import Setting from '@/router/routes/Setting'
 
 Vue.use(VueRouter)
 

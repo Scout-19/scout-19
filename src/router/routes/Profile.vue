@@ -27,9 +27,10 @@
 </template>
 
 <script>
+import firestore from '@/firebase/firestore'
+
 import BasicProfile from '@/components/BasicProfile.vue'
 import PlayerProfile from '@/components/PlayerProfile.vue'
-import firestore from '@/firebase/firestore'
 import Career from '@/components/Career.vue'
 
 export default {
@@ -40,8 +41,7 @@ export default {
     PlayerProfile,
     Career
   },
-  methods: {
-  window:onload = function() {
+  mounted(){
    // read profile from database
    var uid = 'dbHIC56klkQ40fkHXYV5g3uMP1J2'
    var test = firestore.collection('users').doc(uid).collection('profile').doc('public');
@@ -54,7 +54,5 @@ export default {
       }
     })
    },
-}
-
 }
 </script>

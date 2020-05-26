@@ -1,4 +1,4 @@
-import Firebase from 'firebase'
+import firebase from 'firebase/app'
 import 'firebase/firestore'
 
 const config = {
@@ -12,7 +12,8 @@ const config = {
     measurementId: "G-CWFERVQG2Y"
 };
 
-const firebaseApp = Firebase.initializeApp(config, 'exercise-vue')
-const firestore = firebaseApp.firestore()
+const app = firebase.initializeApp(config, 'exercise-vue')
+const firestore = app.firestore()
 
 export default firestore
+
