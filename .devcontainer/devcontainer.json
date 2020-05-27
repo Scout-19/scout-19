@@ -7,6 +7,7 @@
     "workspaceFolder": "/app",
     "shutdownAction": "stopCompose",
     "extensions": [
-        "octref.vetur"
+        "octref.vetur",
+        "msjsdiag.debugger-for-chrome"
     ]
 }
