@@ -27,6 +27,17 @@ export default {
     drawTopPage: function() {
       return this.toppage_route.indexOf(this.$router.currentRoute.name) >= 0
     }
-  }
+  },
+
+  watch: {
+    '$route' (to) {
+        if(to.meta.title) {
+          document.title = to.meta.title + ' | SCOUTME'
+        }
+        else {
+          document.title = 'SCOUTME'
+        }
+    }
+  },
 };
 </script>

@@ -11,6 +11,7 @@
           <v-list-item
             v-for="(chat, i) in chatrooms"
             :key="i"
+            @click="$router.push({name: 'MessageUser', params: {user: chat.user.name}}, () => {})"
           >
             <v-list-item-avatar>
               <img :src="chat.user.icon">
@@ -70,7 +71,7 @@
 
 export default {
   name: 'Message',
-
+  
   components: {
   },
 
@@ -118,7 +119,7 @@ export default {
         console.log("submit " + this.input)
         this.input = ""
       }
-    }
+    },
   }
 
 }

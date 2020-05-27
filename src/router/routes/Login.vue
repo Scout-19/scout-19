@@ -52,6 +52,7 @@
 <script>
 export default {
   name: 'Login',
+  title: 'ログイン',
 
   data: () => ({
     email: '',

@@ -16,7 +16,7 @@ const routes = [
   {
     path: '/',
     name: 'Root',
-    redirect: {name: 'About'}
+    redirect: {name: 'About'},
   },
   {
     path: '/about',
@@ -27,31 +27,43 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+    meta: {title: 'ログイン'}
   },
   {
     path: '/signup',
     name: 'Signup',
     component: Signup,
+    meta: {title: '新規登録'}
   },
   {
     path: '/profile',
     name: 'Profile',
     component: Profile,
+    meta: {title: 'プロフィール'}
   },
   {
     path: '/message',
     name: 'Message',
     component: Message,
+    meta: {title: 'メッセージ'}
+  },
+  {
+    path: '/message/:user',
+    name: 'MessageUser',
+    component: Message,
+    meta: {title: 'メッセージ'}
   },
   {
     path: '/search',
     name: 'Search',
     component: Search,
+    meta: {title: '検索'}
   },
   {
     path: '/setting',
     name: 'Setting',
     component: Setting,
+    meta: {title: '設定'}
   },
 ]
 

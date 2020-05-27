@@ -15,7 +15,7 @@
             v-for="item in items"
             :key="item.title"
             link
-            @click='$router.push({name: item.route}).catch({})'
+            @click='$router.push({name: item.route}, () => {})'
           >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>

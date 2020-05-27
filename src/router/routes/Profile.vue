@@ -37,6 +37,7 @@ import Career from '@/components/Career.vue'
 
 export default {
   name: 'Profile',
+  title: 'プロフィール',
 
   components: {
     BasicProfile,
