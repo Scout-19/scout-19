@@ -15,6 +15,7 @@
                 label="メールアドレス"
                 required
                 outlined
+                @keydown.enter="enterKeyDown"
               ></v-text-field>
             </v-row>
 
@@ -28,6 +29,7 @@
                 label="パスワード"
                 required
                 outlined
+                @keydown.enter="enterKeyDown"
               ></v-text-field>
             </v-row>
 
@@ -51,9 +53,8 @@
 
 <script>
 import firebase from 'firebase/app'
-import 'firebase/auth'
 
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Login',
@@ -75,32 +76,43 @@ export default {
   }),
 
   created() {
-    if(this.getUid != '')
-    {
-      this.$router.push({name: 'Profile'})
+    // already logged in
+    if(this.auth) {
+      this.routeNext()
     }
   },
 
   computed: {
     ...mapGetters([
-      'getUid',
+      'auth',
     ]),
   },
 
   methods: {
-    ...mapActions([
-      'setUid',
-    ]),
+    enterKeyDown: function(e) {
+      // enter key (zenkaku = 229)
+      if(e.keyCode == 13) {
+        this.login()
+      }
+    },
 
     login: function() {
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        .then(res => {
-          this.setUid(res.user.uid)
-          this.$router.push({name: 'Profile'})
-        }, err => {
-          alert(err.message)
-        })
-    }
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(() => {
+        this.routeNext()
+      }, err => {
+        alert(err.message)
+      })
+    },
+
+    routeNext: function() {
+      // redirect
+      if(this.$route.query.redirect) {
+        this.$router.push({name: this.$route.query.redirect})
+      }
+      else {
+        this.$router.push({name: 'Profile'})
+      }
+    },
   }
 }
 </script>>

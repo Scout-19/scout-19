@@ -56,7 +56,7 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
 
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'Setting',
@@ -64,6 +64,12 @@ export default {
   data: () => ({
     mailNotify: true
   }),
+  
+  computed: {
+    ...mapGetters([
+      'getUid',
+    ]),
+  },
 
   methods: {
     ...mapActions([
@@ -71,13 +77,26 @@ export default {
     ]),
 
     logout: function() {
-      firebase.auth().signOut()
-        .then(() => {
-          this.clearUid()
-          this.$router.push({name: 'Login'})
-        }, err => {
-          alert(err.message)
-        })
+      firebase.auth().signOut().then(() => {
+        this.$router.push({name: 'Login'})
+      }, err => {
+        alert(err.message)
+      })
+    }
+  },
+
+  watch: {
+    mailNotify: function() {
+      // todo: get from vuex
+      // var uid = this.getUid
+      var uid = 'dbHIC56klkQ40fkHXYV5g3uMP1J2'
+
+      var ref = firebase.firestore().collection('users').doc(uid).collection('profile').doc('private')
+
+      ref.update({email: this.mailNotify}).then(() => {
+      }, err => {
+        alert(err.message)
+      })
     }
   }
 }

@@ -9,6 +9,10 @@
 </template>
 
 <script>
+import firebase from 'firebase/app'
+
+import { mapActions } from 'vuex'
+
 import SideBar from '@/components/SideBar'
 
 export default {
@@ -24,6 +28,21 @@ export default {
 
   created() {
     this.drawSidebar = this.$router.currentRoute.meta.sidebar
+
+    firebase.auth().onAuthStateChanged(user => {
+      if(user) {
+        this.setUid(user.uid)
+      }
+      else {
+        this.setUid('')
+      }
+    })
+  },
+
+  methods: {
+    ...mapActions([
+      'setUid',
+    ]),
   },
 
   watch: {

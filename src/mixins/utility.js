@@ -25,4 +25,5 @@ export default {
       return time.hour.toString().padStart(2, '0') + ':' + time.minutes.toString().padStart(2, '0')
     },
   },
+
 }

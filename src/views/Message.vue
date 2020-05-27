@@ -5,6 +5,8 @@
       <v-row>
 
         <v-list dense>
+          <v-subheader>メッセージ一覧</v-subheader>
+
           <v-list-item-group v-model="selected" color="primary">
 
             <v-list-item
@@ -67,12 +69,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Message',
-  
-  components: {
-  },
 
   data: () => ({
     input: "",
@@ -104,6 +104,9 @@ export default {
   }),
 
   computed: {
+    ...mapGetters([
+      'getUid',
+    ]),
     selectedLog: function() {
       return (this.selected < 0) ? [] : this.chatrooms[this.selected].log
     },

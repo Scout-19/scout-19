@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Search',
@@ -114,20 +115,23 @@ export default {
     ],
   }),
 
-  methods: {
-    search: function() {
-      this.searched = true
-      console.log(this.sports)
-    }
-  },
-
   computed: {
+    ...mapGetters([
+      'getUid',
+    ]),
     searchEnable: function() {
       return this.prefectures.length > 0 || this.grade.length > 0 || this.sports.length > 0
     },
     foundTeams: function() {
       return this.teams.length
     }
-  }
+  },
+
+  methods: {
+    search: function() {
+      this.searched = true
+      console.log(this.sports)
+    }
+  },
 }
 </script>

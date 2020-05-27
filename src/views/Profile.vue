@@ -60,15 +60,9 @@ export default {
     dominant: {hand: '', leg: ''}
   }),
 
-  computed: {
-    ...mapGetters([
-      'getUid',
-    ]),
-  },
-
-  created(){
-
-    // props or vuex
+  created() {
+    // todo: get from vuex
+    // var uid = this.getUid
     var uid = 'dbHIC56klkQ40fkHXYV5g3uMP1J2'
 
     var ref = firebase.firestore().collection('users').doc(uid).collection('profile').doc('public')
@@ -89,7 +83,15 @@ export default {
         this.weight = data.weight
         this.dominant = {hand: data.dominant_hand, leg: data.dominant_leg}
       }
-    });
+    }, err => {
+      alert(err.message)
+    })
    },
+
+  computed: {
+    ...mapGetters([
+      'getUid',
+    ]),
+  },
 }
 </script>

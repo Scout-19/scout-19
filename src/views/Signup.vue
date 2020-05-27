@@ -51,9 +51,8 @@
 
 <script>
 import firebase from 'firebase/app'
-import 'firebase/auth'
 
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Signup',
@@ -74,30 +73,31 @@ export default {
   }),
 
   created() {
-    if(this.getUid != '')
-    {
-      this.$router.push({name: 'Profile'})
+    // already logged in
+    if(this.auth) {
+      if(this.$route.query.redirect) {
+        this.$router.push({name: this.$route.query.redirect})
+      }
+      else {
+        this.$router.push({name: 'Profile'})
+      }
     }
   },
 
   computed: {
     ...mapGetters([
-      'getUid',
+      'auth',
     ]),
   },
 
   methods: {
-    ...mapActions([
-      'setUid',
-    ]),
-
     signup: function() {
-      firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-        .then(res => {
-          this.setUid(res.user.uid)
-        }, err => {
-          alert(err.message)
-        })
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(() => {
+        // todo: input detail user info
+        this.$router.push({name: '/'})
+      }, err => {
+        alert(err.message)
+      })
     }
   }
 }
