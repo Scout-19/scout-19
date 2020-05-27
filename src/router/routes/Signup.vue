@@ -69,7 +69,7 @@ export default {
   }),
 
   methods: {
-    signup: () => {
+    signup: function() {
 
     }
   }

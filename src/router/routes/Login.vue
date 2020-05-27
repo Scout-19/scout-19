@@ -69,7 +69,7 @@ export default {
   }),
 
   methods: {
-    login: () => {
+    login: function() {
     }
   }
 }

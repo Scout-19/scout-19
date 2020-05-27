@@ -1,7 +1,7 @@
 <template>
   <div class="user-page">
     <v-row>
-      <SideBar acount="player"/>
+      <SideBar account="player"/>
 
       <v-content>
         <v-container fluid class='pa-10'>

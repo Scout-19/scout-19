@@ -1,11 +1,11 @@
 <template>
   <div class="message">
 
+    <h2 class="mb-5">メッセージ</h2>
+
     <v-row>
 
       <v-list dense>
-        <v-subheader>メッセージ一覧</v-subheader>
-
         <v-list-item-group v-model="selected" color="primary">
 
           <v-list-item
