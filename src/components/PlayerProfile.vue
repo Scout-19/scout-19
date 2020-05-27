@@ -40,8 +40,8 @@ export default {
   props: {
     birthday: Object,
     sex: String,
-    height: String,
-    weight: String,
+    height: Number,
+    weight: Number,
     dominant: Object
   },
   

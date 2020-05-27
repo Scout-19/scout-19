@@ -4,19 +4,19 @@
 
     <BasicProfile
       class='pb-5'
-      icon='https://randomuser.me/api/portraits/women/4.jpg'
-      name='橋本 環奈'
-      sports='サッカー'
-      location='東京都'
-      bio='よろしくお願いします。'
+      :icon='icon'
+      :name='name'
+      :sports='sports'
+      :location='location'
+      :bio='bio'
     />
     <PlayerProfile
       class='pb-5'
-      :birthday='{ year: 2005, month: 10, day: 5 }'
-      sex='男'
-      height='170'
-      weight='60'
-      :dominant='{ hand: "右", leg: "左" }'
+      :birthday='birthday'
+      :sex='sex'
+      :height='height'
+      :weight='weight'
+      :dominant='dominant'
     />
     <Career
       class='pb-5'
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-// import firestore from '@/firebase/firestore'
+import db from '@/firebase/firestore'
 
 import BasicProfile from '@/components/BasicProfile.vue'
 import PlayerProfile from '@/components/PlayerProfile.vue'
@@ -43,20 +43,43 @@ export default {
     PlayerProfile,
     Career
   },
-  mounted(){
-   // read profile from database
-   /*
-   var uid = 'dbHIC56klkQ40fkHXYV5g3uMP1J2'
-   var test = firestore.collection('users').doc(uid).collection('profile').doc('public');
-   test.get().then(function(doc) {
-      if (doc.exists) {
-        console.log("Document data:", doc.data());
-      } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
+
+  data: () => ({
+    icon: '',
+    name: '',
+    sports: '',
+    location: '',
+    bio: '',
+    birthday: {year: 0, month: 0, day: 0},
+    sex: '',
+    height: 0,
+    weight: 0,
+    dominant: {hand: '', leg: ''}
+  }),
+
+  created(){
+    // props or vuex
+    var uid = 'dbHIC56klkQ40fkHXYV5g3uMP1J2'
+
+    var ref = db.collection('users').doc(uid).collection('profile').doc('public')
+
+    ref.get().then(doc => {
+      if (doc.exists)
+      {
+        var data = doc.data()
+        this.icon = data.icon
+        this.name = data.first_name + ' ' + data.last_name
+        this.sports = data.sports
+        this.location = data.location
+        this.bio = data.bio
+
+        this.birthday = {year: data.birth_year, month: data.birth_month, day: data.birth_date}
+        this.sex = data.sex
+        this.height = data.height
+        this.weight = data.weight
+        this.dominant = {hand: data.dominant_hand, leg: data.dominant_leg}
       }
-    })
-    */
+    });
    },
 }
 </script>
