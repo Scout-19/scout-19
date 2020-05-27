@@ -3,9 +3,9 @@ import firebase from 'firebase/app'
 
 import App from '@/App.vue'
 
-import router from '@/router/index'
-import store from '@/store/index'
-import vuetify from '@/vuetify/index'
+import router from '@/plugins/router'
+import store from '@/plugins/store'
+import vuetify from '@/plugins/vuetify'
 
 import utility from '@/mixins/utility'
 

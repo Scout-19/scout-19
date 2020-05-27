@@ -1,69 +1,68 @@
 <template>
   <div class="message">
+    <v-container fluid class="pa-5">
 
-    <h2 class="mb-5">メッセージ</h2>
+      <v-row>
 
-    <v-row>
+        <v-list dense>
+          <v-list-item-group v-model="selected" color="primary">
 
-      <v-list dense>
-        <v-list-item-group v-model="selected" color="primary">
-
-          <v-list-item
-            v-for="(chat, i) in chatrooms"
-            :key="i"
-            @click="$router.push({name: 'MessageUser', params: {user: chat.user.name}}, () => {})"
-          >
-            <v-list-item-avatar>
-              <img :src="chat.user.icon">
-            </v-list-item-avatar>
-
-            <v-list-item-content>
-              <v-list-item-title>{{chat.user.name}}</v-list-item-title>
-              <v-list-item-subtitle>{{chat.log.slice(-1)[0].content}}</v-list-item-subtitle>
-              <v-list-item-subtitle class='overline'>{{util_getDateString(chat.log.slice(-1)[0].date)}} {{util_getTimeString(chat.log.slice(-1)[0].time)}}</v-list-item-subtitle>
-            </v-list-item-content>
-
-          </v-list-item>
-        </v-list-item-group>
-
-      </v-list>
-
-      
-      <v-col class="pl-10">
-        <!-- message log -->
-        <v-row
-          v-for="(log, i) in selectedLog"
-          :key="i"
-          :justify="(log.sender == 'you') ? 'start' : 'end'"
-        >
-          <v-list>
-
-            <v-row>
-              <v-list-item-avatar v-if="log.sender == 'you'">
-                <img :src="selectedUser.icon">
+            <v-list-item
+              v-for="(chat, i) in chatrooms"
+              :key="i"
+              @click="$router.push({name: 'MessageUser', params: {user: chat.user.name}}, () => {})"
+            >
+              <v-list-item-avatar>
+                <img :src="chat.user.icon">
               </v-list-item-avatar>
 
-              <v-col>
+              <v-list-item-content>
+                <v-list-item-title>{{chat.user.name}}</v-list-item-title>
+                <v-list-item-subtitle>{{chat.log.slice(-1)[0].content}}</v-list-item-subtitle>
+                <v-list-item-subtitle class='overline'>{{util_getDateString(chat.log.slice(-1)[0].date)}} {{util_getTimeString(chat.log.slice(-1)[0].time)}}</v-list-item-subtitle>
+              </v-list-item-content>
 
-                <v-card class="py-1 px-2" v-if="log.sender == 'you'">{{log.content}}</v-card>
-                <v-card class="py-1 px-2" v-else dark color="primary">{{log.content}}</v-card>
+            </v-list-item>
+          </v-list-item-group>
 
-                <div class='overline'>{{util_getDateString(log.date)}} {{util_getTimeString(log.time)}}</div>
-              </v-col>
-            </v-row>
-          </v-list>
+        </v-list>
 
-        </v-row>
+        
+        <v-col class="pl-10">
+          <!-- message log -->
+          <v-row
+            v-for="(log, i) in selectedLog"
+            :key="i"
+            :justify="(log.sender == 'you') ? 'start' : 'end'"
+          >
+            <v-list>
 
-        <!-- <v-row v-if="selected >= 0" style="position: fixed; bottom: 0px"> -->
-        <v-row v-if="selected >= 0">
-          <v-text-field v-model="input" append-icon="mdi-send" @click:append="submit"></v-text-field>
-        </v-row>
+              <v-row>
+                <v-list-item-avatar v-if="log.sender == 'you'">
+                  <img :src="selectedUser.icon">
+                </v-list-item-avatar>
 
-      </v-col>
+                <v-col>
 
-    </v-row>
+                  <v-card class="py-1 px-2" v-if="log.sender == 'you'">{{log.content}}</v-card>
+                  <v-card class="py-1 px-2" v-else dark color="primary">{{log.content}}</v-card>
 
+                  <div class='overline'>{{util_getDateString(log.date)}} {{util_getTimeString(log.time)}}</div>
+                </v-col>
+              </v-row>
+            </v-list>
+
+          </v-row>
+
+          <!-- <v-row v-if="selected >= 0" style="position: fixed; bottom: 0px"> -->
+          <v-row v-if="selected >= 0">
+            <v-text-field v-model="input" append-icon="mdi-send" @click:append="submit"></v-text-field>
+          </v-row>
+
+        </v-col>
+
+      </v-row>
+    </v-container>
   </div>
 </template>
 

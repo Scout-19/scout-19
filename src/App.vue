@@ -1,32 +1,29 @@
 <template>
   <v-app>
-
-    <TopPage v-if="drawTopPage"/>
-    <UserPage v-else/>
+    <SideBar account="player" v-if="drawSidebar"/>
+    <v-content>
+      <router-view/>
+    </v-content>
 
   </v-app>
 </template>
 
 <script>
-import TopPage from '@/views/TopPage'
-import UserPage from '@/views/UserPage'
+import SideBar from '@/components/SideBar'
 
 export default {
   name: 'App',
 
   components: {
-    TopPage,
-    UserPage
+    SideBar
   },
 
   data: () => ({
-    toppage_route: ['About', 'Login', 'Signup']
+    drawSidebar: false,
   }),
 
-  computed: {
-    drawTopPage: function() {
-      return this.toppage_route.indexOf(this.$router.currentRoute.name) >= 0
-    }
+  created() {
+    this.drawSidebar = this.$router.currentRoute.meta.sidebar
   },
 
   watch: {
@@ -37,6 +34,7 @@ export default {
         else {
           document.title = 'SCOUTME'
         }
+        this.drawSidebar = to.meta.sidebar
     }
   },
 };

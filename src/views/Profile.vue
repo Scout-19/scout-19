@@ -1,30 +1,30 @@
 <template>
   <div class="profile">
-    <h2 class="mb-5">プロフィール</h2>
-
-    <BasicProfile
-      class='pb-5'
-      :icon='icon'
-      :name='name'
-      :sports='sports'
-      :location='location'
-      :bio='bio'
-    />
-    <PlayerProfile
-      class='pb-5'
-      :birthday='birthday'
-      :sex='sex'
-      :height='height'
-      :weight='weight'
-      :dominant='dominant'
-    />
-    <Career
-      class='pb-5'
-      :careers="[
-        {start: {year: 2000, month: 4, day: 1}, end: {year: 2003, month: 3, day: 31}, content: '〇〇小学校でフォワード'},
-        {start: {year: 2003, month: 4, day: 1}, end: {year: 2006, month: 3, day: 31}, content: '△△中学校でフォワード'},
-      ]"
-    />
+    <v-container fluid class="pa-5">
+      <BasicProfile
+        class='pb-5'
+        :icon='icon'
+        :name='name'
+        :sports='sports'
+        :location='location'
+        :bio='bio'
+      />
+      <PlayerProfile
+        class='pb-5'
+        :birthday='birthday'
+        :sex='sex'
+        :height='height'
+        :weight='weight'
+        :dominant='dominant'
+      />
+      <Career
+        class='pb-5'
+        :careers="[
+          {start: {year: 2000, month: 4, day: 1}, end: {year: 2003, month: 3, day: 31}, content: '〇〇小学校でフォワード'},
+          {start: {year: 2003, month: 4, day: 1}, end: {year: 2006, month: 3, day: 31}, content: '△△中学校でフォワード'},
+        ]"
+      />
+    </v-container>
   </div>
 </template>
 
