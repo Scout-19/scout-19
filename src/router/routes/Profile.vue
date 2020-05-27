@@ -29,7 +29,10 @@
 </template>
 
 <script>
-import db from '@/firebase/firestore'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+
+import { mapGetters } from 'vuex'
 
 import BasicProfile from '@/components/BasicProfile.vue'
 import PlayerProfile from '@/components/PlayerProfile.vue'
@@ -37,7 +40,6 @@ import Career from '@/components/Career.vue'
 
 export default {
   name: 'Profile',
-  title: 'プロフィール',
 
   components: {
     BasicProfile,
@@ -58,11 +60,18 @@ export default {
     dominant: {hand: '', leg: ''}
   }),
 
+  computed: {
+    ...mapGetters([
+      'getUid',
+    ]),
+  },
+
   created(){
+
     // props or vuex
     var uid = 'dbHIC56klkQ40fkHXYV5g3uMP1J2'
 
-    var ref = db.collection('users').doc(uid).collection('profile').doc('public')
+    var ref = firebase.firestore().collection('users').doc(uid).collection('profile').doc('public')
 
     ref.get().then(doc => {
       if (doc.exists)

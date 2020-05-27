@@ -50,6 +50,11 @@
 </template>
 
 <script>
+import firebase from 'firebase/app'
+import 'firebase/auth'
+
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'Login',
   title: 'ログイン',
@@ -69,8 +74,32 @@ export default {
     showPassword: false
   }),
 
+  created() {
+    if(this.getUid != '')
+    {
+      this.$router.push({name: 'Profile'})
+    }
+  },
+
+  computed: {
+    ...mapGetters([
+      'getUid',
+    ]),
+  },
+
   methods: {
+    ...mapActions([
+      'setUid',
+    ]),
+
     login: function() {
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        .then(res => {
+          this.setUid(res.user.uid)
+          this.$router.push({name: 'Profile'})
+        }, err => {
+          alert(err.message)
+        })
     }
   }
 }

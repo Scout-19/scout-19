@@ -50,6 +50,11 @@
 </template>
 
 <script>
+import firebase from 'firebase/app'
+import 'firebase/auth'
+
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'Signup',
 
@@ -68,9 +73,31 @@ export default {
     showPassword: false
   }),
 
-  methods: {
-    signup: function() {
+  created() {
+    if(this.getUid != '')
+    {
+      this.$router.push({name: 'Profile'})
+    }
+  },
 
+  computed: {
+    ...mapGetters([
+      'getUid',
+    ]),
+  },
+
+  methods: {
+    ...mapActions([
+      'setUid',
+    ]),
+
+    signup: function() {
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+        .then(res => {
+          this.setUid(res.user.uid)
+        }, err => {
+          alert(err.message)
+        })
     }
   }
 }

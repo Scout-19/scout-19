@@ -44,7 +44,7 @@
         <v-divider class="my-5"></v-divider>
 
         <v-list-item>
-          <v-btn block>ログアウト</v-btn>
+          <v-btn block @click='logout'>ログアウト</v-btn>
         </v-list-item>
 
       </v-list>
@@ -53,12 +53,32 @@
 </template>
 
 <script>
+import firebase from 'firebase/app'
+import 'firebase/auth'
+
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Setting',
 
   data: () => ({
     mailNotify: true
-  })
+  }),
+
+  methods: {
+    ...mapActions([
+      'clearUid',
+    ]),
+
+    logout: function() {
+      firebase.auth().signOut()
+        .then(() => {
+          console.log('signout')
+          this.$router.push({name: 'Login'})
+        }, err => {
+          alert(err.message)
+        })
+    }
+  }
 }
 </script>
