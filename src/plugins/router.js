@@ -83,12 +83,21 @@ router.beforeEach((to, from, next) => {
   let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   let currentUser = firebase.auth().currentUser
 
-  if( requiresAuth && !currentUser ) {
-    next({ name: 'Login', query: { redirect: to.name } })
+  if (requiresAuth) {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        next()
+      } else {
+        next({
+          path: '/Login',
+          query: { redirect: to.fullPath }
+        })
+      }
+    })
+  } else {
+    next() // next() を常に呼び出すようにしてください!
   }
-  else {
-    next()
-  }
+
 })
 
 export default router
