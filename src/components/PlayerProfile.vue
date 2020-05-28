@@ -10,7 +10,7 @@
 
         <v-row>
           <p>生年月日</p>
-          <p>{{birthday}}({{age}})</p>
+          <p>{{util_getDateString(birthday)}} ({{util_getAge(birthday)}})</p>
         </v-row>
 
         <v-row>
@@ -38,17 +38,11 @@ export default {
   name: 'PlayerProfile',
 
   props: {
-    birthday: Object,
+    birthday: Date,
     sex: String,
     height: Number,
     weight: Number,
     dominant: Object
   },
-  
-  computed: {
-    age: function() {
-      return this.util_getAge(new Date(this.birthday.year, this.birthday.month - 1, this.birthday.day))
-    },
-  }
 }
 </script>

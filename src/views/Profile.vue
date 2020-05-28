@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <v-container fluid class="pa-5">
+    <v-container>
       <BasicProfile
         class='pb-5'
         :icon='icon'
@@ -53,7 +53,7 @@ export default {
     sports: '',
     location: '',
     bio: '',
-    birthday: {year: 0, month: 0, day: 0},
+    birthday: new Date(),
     sex: '',
     height: 0,
     weight: 0,
@@ -72,12 +72,12 @@ export default {
       {
         var data = doc.data()
         this.icon = data.icon
-        this.name = data.first_name + ' ' + data.last_name
+        this.name = data.last_name + ' ' +  data.first_name
         this.sports = data.sports
         this.location = data.location
         this.bio = data.bio
 
-        this.birthday = {year: data.birth_year, month: data.birth_month, day: data.birth_date}
+        this.birthday = data.birthday.toDate()
         this.sex = data.sex
         this.height = data.height
         this.weight = data.weight

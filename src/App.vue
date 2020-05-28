@@ -1,11 +1,13 @@
 <template>
-  <v-app>
+  <v-app :style="{background: $vuetify.theme.themes.light.background}">
 
-    <SideBar account="player" v-if="drawSidebar"/>
+    <SideBar account="player" v-if="false"/>
     
     <v-content>
       <router-view/>
     </v-content>
+
+    <BottomNavigation v-if="drawNavigation"/>
 
   </v-app>
 </template>
@@ -16,21 +18,23 @@ import firebase from 'firebase/app'
 import { mapActions } from 'vuex'
 
 import SideBar from '@/components/SideBar'
+import BottomNavigation from '@/components/BottomNavigation'
 
 export default {
   name: 'App',
 
   components: {
-    SideBar
+    SideBar,
+    BottomNavigation
   },
 
   data: () => ({
-    drawSidebar: false,
+    drawNavigation: false,
   }),
 
   created() {
     // first judge
-    this.drawSidebar = this.$router.currentRoute.meta.sidebar
+    this.drawNavigation = this.$router.currentRoute.meta.requiresAuth
 
     // set uid to store
     firebase.auth().onAuthStateChanged(user => {
@@ -52,7 +56,7 @@ export default {
   watch: {
     // judge when change route
     '$route' (to) {
-        this.drawSidebar = to.meta.sidebar
+        this.drawNavigation = to.meta.requiresAuth
     }
   },
 };

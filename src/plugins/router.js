@@ -21,55 +21,53 @@ const routes = [
     path: '/',
     name: 'Root',
     redirect: {name: 'About'},
-    meta: {sidebar: false}
   },
   {
     path: '/about',
     name: 'About',
     component: About,
-    meta: {sidebar: false}
   },
   {
     path: '/login',
     name: 'Login',
     component: Login,
-    meta: {title: 'ログイン', sidebar: false}
+    meta: {title: 'ログイン'}
   },
   {
     path: '/signup',
     name: 'Signup',
     component: Signup,
-    meta: {title: '新規登録', sidebar: false}
+    meta: {title: '新規登録'}
   },
   {
     path: '/profile',
     name: 'Profile',
     component: Profile,
-    meta: {title: 'プロフィール', sidebar: true, requiresAuth: true}
+    meta: {title: 'プロフィール', requiresAuth: true}
   },
   {
     path: '/message',
     name: 'Message',
     component: Message,
-    meta: {title: 'メッセージ', sidebar: true, requiresAuth: true}
+    meta: {title: 'メッセージ', requiresAuth: true}
   },
   {
     path: '/message/:id',
     name: 'MessageRoom',
     component: Message,
-    meta: {title: 'メッセージ', sidebar: true, requiresAuth: true}
+    meta: {title: 'メッセージ', requiresAuth: true}
   },
   {
     path: '/search',
     name: 'Search',
     component: Search,
-    meta: {title: '検索', sidebar: true, requiresAuth: true}
+    meta: {title: '検索', requiresAuth: true}
   },
   {
     path: '/setting',
     name: 'Setting',
     component: Setting,
-    meta: {title: '設定', sidebar: true, requiresAuth: true}
+    meta: {title: '設定', requiresAuth: true}
   },
 ]
 
