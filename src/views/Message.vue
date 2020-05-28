@@ -10,9 +10,9 @@
           <v-list-item-group v-model="selected" color="primary">
 
             <v-list-item
-              v-for="(room, i) in chatrooms2"
+              v-for="(room, i) in chatrooms"
               :key="i"
-              @click="$router.push({name: 'MessageUser', params: {user: room.opponent.last_name + ' ' + room.opponent.first_name}}, () => {})"
+              @click="$router.push({name: 'MessageRoom', params: {id: room.id}}, () => {})"
             >
               <v-list-item-avatar>
                 <img :src="room.opponent.icon">
@@ -21,7 +21,7 @@
               <v-list-item-content>
                 <v-list-item-title>{{room.opponent.last_name + ' ' + room.opponent.first_name}}</v-list-item-title>
                 <v-list-item-subtitle>{{room.latest.content}}</v-list-item-subtitle>
-                <v-list-item-subtitle class='overline'>{{room.latest.timestamp}}</v-list-item-subtitle>
+                <v-list-item-subtitle class='overline'>{{util_getDateTimeString(room.latest.timestamp.toDate())}}</v-list-item-subtitle>
               </v-list-item-content>
 
             </v-list-item>
@@ -48,11 +48,12 @@
                     class="py-1 px-2"
                     :dark="sendByMe(message)"
                     :color="(sendByMe(message)) ? 'primary' : ''"
+                    style="white-space: pre;"
                   >
-                    {{message.content}}
+                    <div>{{message.content}}</div>
                   </v-card>
 
-                  <div class='overline'>{{message.timestamp}}</div>
+                  <div class='overline'>{{util_getDateTimeString(message.timestamp.toDate())}}</div>
                 </v-col>
               </v-row>
             </v-list>
@@ -60,7 +61,15 @@
           </v-row>
 
           <v-row v-if="selected >= 0">
-            <v-text-field v-model="input" append-icon="mdi-send" @click:append="submit"></v-text-field>
+            <v-textarea
+              v-model="input"
+              append-icon="mdi-send"
+              auto-grow
+              clearable
+              outlined
+              @click:append="submit"
+              @keydown.enter.ctrl="enterKeyDown"
+            />
           </v-row>
 
         </v-col>
@@ -83,11 +92,13 @@ export default {
     input: '',
     selected: -1,
 
-    chatrooms2: [],
+    chatrooms: [],
     messages: [],
 
     unsubscribe_user_chatroom_ids: null,
-    unsubscribe_messages: null
+    unsubscribe_messages: null,
+
+    now: new Date()
   }),
 
   created() {
@@ -113,8 +124,12 @@ export default {
       'getUid',
     ]),
     selectedUser: function() {
-      return this.chatrooms2[this.selected].opponent
+      return this.chatrooms[this.selected].opponent
     },
+
+    roomid: function() {
+      return this.chatrooms[this.selected].id
+    }
   },
 
   methods: {
@@ -122,16 +137,32 @@ export default {
       return message.user_id == this.getUid
     },
 
+    enterKeyDown: function(e) {
+      // enter key (zenkaku = 229)
+      if(e.keyCode == 13) {
+        this.submit()
+      }
+    },
+
     submit: function() {
       if( this.input.length > 0 ) {
-        console.log("submit " + this.input)
-        this.input = ""
+        const payload = {
+          // escape return
+          content: this.input.replace('\n', '\\n'),
+          timestamp: new Date(),
+          user_id: this.getUid
+        }
+        firebase.firestore().collection('chat_rooms').doc(this.roomid).collection('messages').add( payload ).then(() => {
+          this.input = ""
+        }, err => {
+          alert(err.message)
+        })
       }
     },
 
     reloadChatrooms: function(ids) {
       // clear
-      this.chatrooms2 = []
+      this.chatrooms = []
 
       ids.forEach( id => {
 
@@ -144,7 +175,7 @@ export default {
 
             firebase.firestore().collection('users').doc(opponentUid).collection('profile').doc('public').get().then(doc => {
               if( doc.exists ) {
-                this.chatrooms2.push(
+                this.chatrooms.push(
                   {
                     id: id,
                     latest: data.latest,
@@ -165,7 +196,7 @@ export default {
     selected: function() {
 
       // out index
-      if(this.selected < 0 || this.selected >= this.chatrooms2.length) {
+      if(this.selected < 0 || this.selected >= this.chatrooms.length) {
         return
       }
 
@@ -178,18 +209,28 @@ export default {
       // clear
       this.messages = []
 
-      var room_id = this.chatrooms2[this.selected].id
-      var ref = firebase.firestore().collection('chat_rooms').doc(room_id).collection('messages')
+      var ref = firebase.firestore().collection('chat_rooms').doc(this.roomid).collection('messages')
 
-      this.unsubscribe_messages = ref.onSnapshot(col => {
-        col.docs.forEach( doc => {
-          ref.doc(doc.id).get().then( message => {
-            if( message.exists ) {
-              this.messages.push(message.data())
-            }
-          })
+      this.unsubscribe_messages = ref.orderBy('timestamp', 'asc').onSnapshot(col => {
+        col.docChanges().forEach( change => {
+          // push only added item
+          if( change.type == 'added' ) {
+            ref.doc(change.doc.id).get().then( message => {
+              if( message.exists ) {
+                this.messages.push(
+                  {
+                    // escape return
+                    content: message.data().content.replace('\\n', '\n'),
+                    timestamp: message.data().timestamp,
+                    user_id: message.data().user_id,
+                  }
+                )
+              }
+            })
+          }
         })
       })
+
     }
   }
 

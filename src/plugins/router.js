@@ -54,8 +54,8 @@ const routes = [
     meta: {title: 'メッセージ', sidebar: true, requiresAuth: true}
   },
   {
-    path: '/message/:user',
-    name: 'MessageUser',
+    path: '/message/:id',
+    name: 'MessageRoom',
     component: Message,
     meta: {title: 'メッセージ', sidebar: true, requiresAuth: true}
   },

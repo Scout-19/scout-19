@@ -15,7 +15,7 @@
           >
             <v-list-item-content>
               <v-list-item-title>{{career.content}}</v-list-item-title>
-              <v-list-item-subtitle class='overline'>{{util_getDateString(career.start)}}-{{util_getDateString(career.end)}}</v-list-item-subtitle>
+              <v-list-item-subtitle class='overline'>{{career.start}}-{{career.end}}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-row>

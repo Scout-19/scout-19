@@ -10,7 +10,7 @@
 
         <v-row>
           <p>生年月日</p>
-          <p>{{util_getDateString(birthday)}}({{age}})</p>
+          <p>{{birthday}}({{age}})</p>
         </v-row>
 
         <v-row>
