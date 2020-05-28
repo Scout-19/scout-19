@@ -12,19 +12,10 @@
         <v-list-item-content>
           <v-list-item-title class="headline">{{name}}</v-list-item-title>
           <v-list-item-subtitle class="subtitle-1">{{sports}}</v-list-item-subtitle>
-
-          <v-row no-gutters>
-            <v-col>
-              <v-row justify="end" align="center">
-                <v-icon>mdi-map-marker</v-icon>
-              </v-row>
-            </v-col>
-            <v-col>
-              <v-row justify="start" align="start">
-                <v-card-text class=".caption">{{location}}</v-card-text>
-              </v-row>
-            </v-col>
-          </v-row>
+          <v-list-item-subtitle>
+            <v-icon>mdi-map-marker</v-icon>
+            <span class="caption">{{location}}</span>
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
