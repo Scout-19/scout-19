@@ -1,6 +1,11 @@
 <template>
   <div class="profile">
-    <v-container>
+    <v-progress-linear
+      indeterminate
+      color="primary"
+      v-if="!dataLoaded"
+    ></v-progress-linear>
+    <v-container v-else>
       <BasicProfile
         class='pb-5'
         :icon='icon'
@@ -48,6 +53,8 @@ export default {
   },
 
   data: () => ({
+    dataLoaded: false,
+
     icon: '',
     name: '',
     sports: '',
@@ -82,6 +89,8 @@ export default {
         this.height = data.height
         this.weight = data.weight
         this.dominant = {hand: data.dominant_hand, leg: data.dominant_leg}
+
+        this.dataLoaded = true
       }
     }, err => {
       alert(err.message)

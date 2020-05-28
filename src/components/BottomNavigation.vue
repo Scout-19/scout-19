@@ -1,19 +1,26 @@
 <template>
   <div id="btm-nav">
+    <v-progress-linear
+      indeterminate
+      color="primary"
+      v-if="!dataLoaded"
+    ></v-progress-linear>
+    
     <v-bottom-navigation
       v-model="selected"
       color="primary"
       grow
       app
+      v-else
     >
       <v-btn
         height="100%"
-        v-for="(item, i) in items"
+        v-for="(nav, i) in navs"
         :key="i"
-        @click='$router.push({name: item.route}, () => {})'
+        @click='$router.push({name: nav.route}, () => {})'
       >
-        <span class="overline">{{item.title}}</span>
-        <v-icon class="mb-1">{{item.icon}}</v-icon>
+        <span class="overline">{{nav.title}}</span>
+        <v-icon class="mb-1">{{nav.icon}}</v-icon>
       </v-btn>
     </v-bottom-navigation>
 
@@ -28,6 +35,8 @@ export default {
   name: 'BottomNavigation',
 
   data: () => ({
+    dataLoaded: false,
+
     selected: 0,
     account_type: '',
 
@@ -48,6 +57,13 @@ export default {
   }),
 
   created() {
+    // apply current route
+    for(this.selected = 0; this.selected < this.navs.length; this.selected++) {
+      if(this.navs[this.selected].route == this.$router.currentRoute.name) {
+        break
+      }
+    }
+
     // todo: get from vuex
     // var uid = this.getUid
     var uid = 'dbHIC56klkQ40fkHXYV5g3uMP1J2'
@@ -56,16 +72,16 @@ export default {
       if (doc.exists)
       {
         this.account_type = doc.data().account_type
+        this.dataLoaded = true
       }
     }, err => {
       alert(err.message)
     })
 
-
   },
 
   computed: {
-    items: function() {
+    navs: function() {
       return ( this.account_type == 'player' ) ? this.nav_table.player : this.nav_table.scouter
     },
   },

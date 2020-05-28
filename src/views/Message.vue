@@ -1,6 +1,16 @@
 <template>
   <div class="message">
-    <v-container fluid class="pa-5">
+    <v-progress-linear
+      indeterminate
+      color="primary"
+      v-if="!dataLoaded"
+    ></v-progress-linear>
+
+    <v-container
+      v-else
+      fluid
+      class="pa-5"
+    >
 
       <v-row>
 
@@ -89,6 +99,8 @@ export default {
   name: 'Message',
 
   data: () => ({
+    dataLoaded: false,
+
     input: '',
     selected: -1,
 
@@ -184,6 +196,8 @@ export default {
                 )
               }
             })
+
+            this.dataLoaded = true
           }
         }, err => {
           alert(err.message)
