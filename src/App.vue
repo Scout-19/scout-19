@@ -9,6 +9,10 @@
 
     <BottomNavigation v-if="drawNavigation"/>
 
+    <v-footer absolute>
+      <v-col class="text-center caption">© XXX All rights reserved.</v-col>
+    </v-footer>
+
   </v-app>
 </template>
 
