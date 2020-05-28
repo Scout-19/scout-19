@@ -32,6 +32,23 @@
             </v-row>
 
             <v-row class="ma-1" justify="center">
+              <v-text-field
+                v-model="password2"
+                :rules="passwordRules"
+                :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showPassword2 ? 'text' : 'password'"
+                @click:append="showPassword2 = !showPassword2"
+                label="パスワード (確認用)"
+                required
+                outlined
+              ></v-text-field>
+            </v-row>
+
+            <v-row class="ma-1" v-if="errorMessage != ''">
+              <p class="error--text overline">{{errorMessage}}</p>
+            </v-row>
+
+            <v-row class="ma-1" justify="center">
               <v-col>
                 <v-btn block color="primary" @click="signup">
                   登録
@@ -60,16 +77,20 @@ export default {
   data: () => ({
     email: '',
     emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      v => !!v || 'メールアドレスを入力してください。',
+      v => /.+@.+\..+/.test(v) || 'メールアドレスの形式が無効です。',
     ],
 
     password: '',
+    password2: '',
     passwordRules: [
-      v => !!v || 'Password is required',
-      v => v.length >= 8 || 'Min 8 characters',
+      v => !!v || 'パスワードを入力してください。',
+      v => v.length >= 8 || 'パスワードを8文字以上で入力してください。',
     ],
-    showPassword: false
+    showPassword: false,
+    showPassword2: false,
+
+    errorMessage: ''
   }),
 
   created() {
@@ -92,11 +113,56 @@ export default {
 
   methods: {
     signup: function() {
+      // clear
+      this.errorMessage = ''
+
+      // email rule
+      for(let i = 0; i < this.emailRules.length; i++) {
+        let ret = this.emailRules[i](this.email)
+        if( ret != true ) {
+          this.errorMessage = ret
+          return
+        }
+      }
+
+      // password rule
+      for(let i = 0; i < this.passwordRules.length; i++) {
+        let ret = this.passwordRules[i](this.password)
+        if( ret != true ) {
+          this.errorMessage = ret
+          return
+        }
+      }
+
+      // password configure
+      if(this.password != this.password2) {
+        this.errorMessage = 'パスワードが一致しません。'
+        return
+      }
+
+      // try auth
+      // https://firebase.google.com/docs/reference/js/firebase.auth.Auth
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(() => {
         // todo: input detail user info
         this.$router.push({name: '/'})
       }, err => {
-        alert(err.message)
+        switch(err.code) {
+          case 'auth/invalid-email':
+            this.errorMessage = 'メールアドレスの形式が無効です。'
+            break;
+          case 'auth/user-disabled':
+            this.errorMessage = 'ユーザーが無効です。'
+            break;
+          case 'auth/user-not-found':
+            this.errorMessage = 'ユーザーが見つかりませんでした。'
+            break;
+          case 'auth/wrong-password':
+            this.errorMessage = 'パスワードが間違っています。'
+            break;
+          default:
+            this.errorMessage = err.message
+            break;
+        }
       })
     }
   }

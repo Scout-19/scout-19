@@ -1,6 +1,8 @@
 <template>
   <v-app>
+
     <SideBar account="player" v-if="drawSidebar"/>
+    
     <v-content>
       <router-view/>
     </v-content>
@@ -27,8 +29,10 @@ export default {
   }),
 
   created() {
+    // first judge
     this.drawSidebar = this.$router.currentRoute.meta.sidebar
 
+    // set uid to store
     firebase.auth().onAuthStateChanged(user => {
       if(user) {
         this.setUid(user.uid)
@@ -46,13 +50,8 @@ export default {
   },
 
   watch: {
+    // judge when change route
     '$route' (to) {
-        if(to.meta.title) {
-          document.title = to.meta.title + ' | SCOUTME'
-        }
-        else {
-          document.title = 'SCOUTME'
-        }
         this.drawSidebar = to.meta.sidebar
     }
   },

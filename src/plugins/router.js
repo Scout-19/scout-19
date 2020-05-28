@@ -33,13 +33,13 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
-    meta: {title: 'ログイン', sidebar: false, requiresAuth: false}
+    meta: {title: 'ログイン', sidebar: false}
   },
   {
     path: '/signup',
     name: 'Signup',
     component: Signup,
-    meta: {title: '新規登録', sidebar: false, requiresAuth: false}
+    meta: {title: '新規登録', sidebar: false}
   },
   {
     path: '/profile',
@@ -79,15 +79,33 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  let requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-  let currentUser = firebase.auth().currentUser
+router.beforeEach((to, from, next) =>
+{
+  // request auth
+  var requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
-  if( requiresAuth && !currentUser ) {
-    next({ name: 'Login', query: { redirect: to.name } })
+  if( requiresAuth ) {
+    firebase.auth().onAuthStateChanged(user => {
+      if(user) {
+        next()
+      }
+      else {
+        next({ name: 'Login', query: { redirect: to.name } })
+      }
+    })
   }
   else {
     next()
+  }
+
+  // document title
+  var title = to.meta.title
+
+  if( title ) {
+    document.title = title + ' | SCOUTME'
+  }
+  else {
+    document.title = 'SCOUTME'
   }
 })
 

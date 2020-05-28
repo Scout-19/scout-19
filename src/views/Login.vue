@@ -33,6 +33,10 @@
               ></v-text-field>
             </v-row>
 
+            <v-row class="ma-1" v-if="errorMessage != ''">
+              <p class="error--text overline">{{errorMessage}}</p>
+            </v-row>
+
             <v-row class="ma-1" justify="center">
               <v-col>
                 <v-btn block color="primary" @click="login">
@@ -58,21 +62,22 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'Login',
-  title: 'ログイン',
 
   data: () => ({
     email: '',
     emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      v => !!v || 'メールアドレスを入力してください。',
+      v => /.+@.+\..+/.test(v) || 'メールアドレスの形式が無効です。',
     ],
 
     password: '',
     passwordRules: [
-      v => !!v || 'Password is required',
-      v => v.length >= 8 || 'Min 8 characters',
+      v => !!v || 'パスワードを入力してください。',
+      v => v.length >= 8 || 'パスワードを8文字以上で入力してください。',
     ],
-    showPassword: false
+    showPassword: false,
+
+    errorMessage: ''
   }),
 
   created() {
@@ -97,10 +102,49 @@ export default {
     },
 
     login: function() {
+      // clear
+      this.errorMessage = ''
+
+      // email rule
+      for(let i = 0; i < this.emailRules.length; i++) {
+        let ret = this.emailRules[i](this.email)
+        if( ret != true ) {
+          this.errorMessage = ret
+          return
+        }
+      }
+
+      // password rule
+      for(let i = 0; i < this.passwordRules.length; i++) {
+        let ret = this.passwordRules[i](this.password)
+        if( ret != true ) {
+          this.errorMessage = ret
+          return
+        }
+      }
+
+      // auth
+      // https://firebase.google.com/docs/reference/js/firebase.auth.Auth
       firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(() => {
         this.routeNext()
       }, err => {
-        alert(err.message)
+        switch(err.code) {
+          case 'auth/invalid-email':
+            this.errorMessage = 'メールアドレスの形式が無効です。'
+            break;
+          case 'auth/user-disabled':
+            this.errorMessage = 'ユーザーが無効です。'
+            break;
+          case 'auth/user-not-found':
+            this.errorMessage = 'ユーザーが見つかりませんでした。'
+            break;
+          case 'auth/wrong-password':
+            this.errorMessage = 'パスワードが間違っています。'
+            break;
+          default:
+            this.errorMessage = err.message
+            break;
+        }
       })
     },
 
