@@ -96,6 +96,9 @@ router.beforeEach((to, from, next) =>
     next()
   }
 
+  // scroll to top
+  window.scrollTo({top: 0, behavior: 'instant'})
+
   // document title
   var title = to.meta.title
 
