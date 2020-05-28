@@ -3,8 +3,7 @@
     <v-card class='pa-5'>
       <v-list-item>
         <v-list-item-avatar
-          size="80"
-          color="grey"
+          size="90"
         >
           <img :src="icon">
         </v-list-item-avatar>
@@ -19,7 +18,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-card-text class="body-2">{{bio}}</v-card-text>
+      <v-card-text>{{bio}}</v-card-text>
 
     </v-card>
   </div>

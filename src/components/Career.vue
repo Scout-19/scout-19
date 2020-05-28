@@ -1,26 +1,23 @@
 <template>
   <div class="career">
-    <v-card
-      class='pa-5'
-    >
+    <v-card class='pa-5'>
+
       <v-col>
-        <v-row>
-          <h2>略歴</h2>
+        <v-row class="mb-3">
+          <span class="headline">略歴</span>
         </v-row>
 
-        <v-row>
-          <v-list-item
-            v-for="(career, i) in careers"
-            :key="i"
-          >
-            <v-list-item-content>
-              <v-list-item-title>{{career.content}}</v-list-item-title>
-              <v-list-item-subtitle class='overline'>{{career.start}}-{{career.end}}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-row>
+        <v-data-table
+          :headers="headers"
+          :items="careers"
+          mobile-breakpoint=""
+          hide-default-footer
+          disable-sort
+        >
+        </v-data-table>
 
       </v-col>
+      
     </v-card>
   </div>
 </template>
@@ -32,7 +29,15 @@ export default {
 
   props: {
     careers: Array,
-  }
-  
+  },
+
+  data: () => ({
+    headers: [
+      { text: '年', value: 'year' },
+      { text: '月', value: 'month' },
+      { text: '内容', value: 'content' },
+    ],
+  }),
+
 }
 </script>

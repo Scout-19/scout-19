@@ -43,7 +43,7 @@
           <v-divider class="my-5"></v-divider>
 
           <v-list-item>
-            <v-btn block @click='logout'>ログアウト</v-btn>
+            <v-btn block @click='logout' color="secondary">ログアウト</v-btn>
           </v-list-item>
 
         </v-list>

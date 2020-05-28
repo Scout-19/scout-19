@@ -25,8 +25,8 @@
       <Career
         class='pb-5'
         :careers="[
-          {start: {year: 2000, month: 4, day: 1}, end: {year: 2003, month: 3, day: 31}, content: '〇〇小学校でフォワード'},
-          {start: {year: 2003, month: 4, day: 1}, end: {year: 2006, month: 3, day: 31}, content: '△△中学校でフォワード'},
+          {year: 2010, month: 4, content: '〇〇小学校でフォワード'},
+          {year: 2013, month: 4, content: '△△中学校でフォワードおおおおおおおおおおおおおお'},
         ]"
       />
     </v-container>
