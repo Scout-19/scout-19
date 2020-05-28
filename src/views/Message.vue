@@ -10,53 +10,55 @@
           <v-list-item-group v-model="selected" color="primary">
 
             <v-list-item
-              v-for="(chat, i) in chatrooms"
+              v-for="(room, i) in chatrooms2"
               :key="i"
-              @click="$router.push({name: 'MessageUser', params: {user: chat.user.name}}, () => {})"
+              @click="$router.push({name: 'MessageUser', params: {user: room.opponent.last_name + ' ' + room.opponent.first_name}}, () => {})"
             >
               <v-list-item-avatar>
-                <img :src="chat.user.icon">
+                <img :src="room.opponent.icon">
               </v-list-item-avatar>
 
               <v-list-item-content>
-                <v-list-item-title>{{chat.user.name}}</v-list-item-title>
-                <v-list-item-subtitle>{{chat.log.slice(-1)[0].content}}</v-list-item-subtitle>
-                <v-list-item-subtitle class='overline'>{{util_getDateString(chat.log.slice(-1)[0].date)}} {{util_getTimeString(chat.log.slice(-1)[0].time)}}</v-list-item-subtitle>
+                <v-list-item-title>{{room.opponent.last_name + ' ' + room.opponent.first_name}}</v-list-item-title>
+                <v-list-item-subtitle>{{room.latest.content}}</v-list-item-subtitle>
+                <v-list-item-subtitle class='overline'>{{room.latest.timestamp}}</v-list-item-subtitle>
               </v-list-item-content>
 
             </v-list-item>
           </v-list-item-group>
 
         </v-list>
-
         
         <v-col class="pl-10">
-          <!-- message log -->
           <v-row
-            v-for="(log, i) in selectedLog"
+            v-for="(message, i) in messages"
             :key="i"
-            :justify="(log.sender == 'you') ? 'start' : 'end'"
+            :justify="sendByMe(message) ? 'end' : 'start'"
           >
             <v-list>
 
               <v-row>
-                <v-list-item-avatar v-if="log.sender == 'you'">
+                <v-list-item-avatar v-if="!sendByMe(message)">
                   <img :src="selectedUser.icon">
                 </v-list-item-avatar>
 
                 <v-col>
 
-                  <v-card class="py-1 px-2" v-if="log.sender == 'you'">{{log.content}}</v-card>
-                  <v-card class="py-1 px-2" v-else dark color="primary">{{log.content}}</v-card>
+                  <v-card
+                    class="py-1 px-2"
+                    :dark="sendByMe(message)"
+                    :color="(sendByMe(message)) ? 'primary' : ''"
+                  >
+                    {{message.content}}
+                  </v-card>
 
-                  <div class='overline'>{{util_getDateString(log.date)}} {{util_getTimeString(log.time)}}</div>
+                  <div class='overline'>{{message.timestamp}}</div>
                 </v-col>
               </v-row>
             </v-list>
 
           </v-row>
 
-          <!-- <v-row v-if="selected >= 0" style="position: fixed; bottom: 0px"> -->
           <v-row v-if="selected >= 0">
             <v-text-field v-model="input" append-icon="mdi-send" @click:append="submit"></v-text-field>
           </v-row>
@@ -69,59 +71,126 @@
 </template>
 
 <script>
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Message',
 
   data: () => ({
-    input: "",
+    input: '',
     selected: -1,
-    chatrooms: [
-      {
-        user: { icon: 'https://randomuser.me/api/portraits/men/80.jpg', name: '影山 秀路' },
-        log: [
-          { sender: 'me', content: 'はじめまして', date: {year: 2020, month: 4, day: 22}, time: {hour: 23, minutes: 50} },
-          { sender: 'me', content: 'はじめまして', date: {year: 2020, month: 4, day: 22}, time: {hour: 23, minutes: 50} },
-          { sender: 'me', content: 'はじめまして', date: {year: 2020, month: 4, day: 22}, time: {hour: 23, minutes: 50} },
-          { sender: 'me', content: 'はじめまして', date: {year: 2020, month: 4, day: 22}, time: {hour: 23, minutes: 50} },
-          { sender: 'me', content: 'はじめまして', date: {year: 2020, month: 4, day: 22}, time: {hour: 23, minutes: 50} },
-          { sender: 'me', content: 'はじめまして', date: {year: 2020, month: 4, day: 22}, time: {hour: 23, minutes: 50} },
-          { sender: 'me', content: 'はじめまして', date: {year: 2020, month: 4, day: 22}, time: {hour: 23, minutes: 50} },
-          { sender: 'me', content: 'はじめまして', date: {year: 2020, month: 4, day: 22}, time: {hour: 23, minutes: 50} },
-          { sender: 'me', content: 'はじめまして', date: {year: 2020, month: 4, day: 22}, time: {hour: 23, minutes: 50} },
-          { sender: 'me', content: 'はじめまして', date: {year: 2020, month: 4, day: 22}, time: {hour: 23, minutes: 50} },
-          { sender: 'you', content: 'こんにちは', date: {year: 2020, month: 4, day: 22}, time: {hour: 23, minutes: 52} },
-        ]
-      },
-      {
-        user: { icon: 'https://randomuser.me/api/portraits/men/81.jpg', name: '山田 太郎' },
-        log: [
-          { sender: 'you', content: 'こんにちは', date: {year: 2020, month: 4, day: 21}, time: {hour: 21, minutes: 1} },
-        ]
-      },
-    ]
+
+    chatrooms2: [],
+    messages: [],
+
+    unsubscribe_user_chatroom_ids: null,
+    unsubscribe_messages: null
   }),
+
+  created() {
+    // todo: get from vuex
+    // var uid = this.getUid
+    var uid = 'dbHIC56klkQ40fkHXYV5g3uMP1J2'
+
+    var ref = firebase.firestore().collection('users').doc(uid).collection('chat_rooms_ids').doc('ids')
+
+    this.unsubscribe_user_chatroom_ids = ref.onSnapshot(doc => {
+      this.reloadChatrooms(doc.data().ids)
+    })
+  },
+
+  destroyed() {
+    if( this.unsubscribe_user_chatroom_ids ) {
+      this.unsubscribe_user_chatroom_ids()
+    }
+  },
 
   computed: {
     ...mapGetters([
       'getUid',
     ]),
-    selectedLog: function() {
-      return (this.selected < 0) ? [] : this.chatrooms[this.selected].log
-    },
     selectedUser: function() {
-      return (this.selected < 0) ? {} : this.chatrooms[this.selected].user
-    }
+      return this.chatrooms2[this.selected].opponent
+    },
   },
 
   methods: {
+    sendByMe: function(message) {
+      return message.user_id == this.getUid
+    },
+
     submit: function() {
       if( this.input.length > 0 ) {
         console.log("submit " + this.input)
         this.input = ""
       }
     },
+
+    reloadChatrooms: function(ids) {
+      // clear
+      this.chatrooms2 = []
+
+      ids.forEach( id => {
+
+        // get chatroom info
+        firebase.firestore().collection('chat_rooms').doc(id).get().then(doc => {
+          if (doc.exists)
+          {
+            var data = doc.data()
+            var opponentUid = this.getUid == data.participants[0] ? data.participants[1] : data.participants[0]
+
+            firebase.firestore().collection('users').doc(opponentUid).collection('profile').doc('public').get().then(doc => {
+              if( doc.exists ) {
+                this.chatrooms2.push(
+                  {
+                    id: id,
+                    latest: data.latest,
+                    opponent: doc.data()
+                  }
+                )
+              }
+            })
+          }
+        }, err => {
+          alert(err.message)
+        })
+      })
+    },
+  },
+
+  watch: {
+    selected: function() {
+
+      // out index
+      if(this.selected < 0 || this.selected >= this.chatrooms2.length) {
+        return
+      }
+
+      // unsubscribe
+      if(this.unsubscribe_messages != null) {
+        this.unsubscribe_messages()
+        this.unsubscribe_messages = null
+      }
+
+      // clear
+      this.messages = []
+
+      var room_id = this.chatrooms2[this.selected].id
+      var ref = firebase.firestore().collection('chat_rooms').doc(room_id).collection('messages')
+
+      this.unsubscribe_messages = ref.onSnapshot(col => {
+        col.docs.forEach( doc => {
+          ref.doc(doc.id).get().then( message => {
+            if( message.exists ) {
+              this.messages.push(message.data())
+            }
+          })
+        })
+      })
+    }
   }
 
 }
