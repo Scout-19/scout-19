@@ -17,7 +17,7 @@
         height="100%"
         v-for="(nav, i) in navs"
         :key="i"
-        @click='$router.push({name: nav.route}, () => {})'
+        @click='click(nav)'
       >
         <span class="overline">{{nav.title}}</span>
         <v-icon class="mb-1">{{nav.icon}}</v-icon>
@@ -64,6 +64,9 @@ export default {
       }
     }
 
+    // set initial title
+    this.$emit('input', this.navs[this.selected].title)
+
     // todo: get from vuex
     // var uid = this.getUid
     var uid = 'dbHIC56klkQ40fkHXYV5g3uMP1J2'
@@ -77,13 +80,27 @@ export default {
     }, err => {
       alert(err.message)
     })
-
   },
 
   computed: {
     navs: function() {
       return ( this.account_type == 'player' ) ? this.nav_table.player : this.nav_table.scouter
     },
+  },
+
+  methods: {
+    click: function(nav) {
+      this.$router.push({name: nav.route}).catch(err => {
+        // scroll to top
+        if(err.name == 'NavigationDuplicated') {
+          window.scrollTo({top: 0, behavior: 'smooth'})
+        }
+        else {
+          console.log(err.message)
+        }
+      })
+      this.$emit('input', nav.title)
+    }
   },
 }
 </script>

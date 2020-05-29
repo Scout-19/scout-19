@@ -7,7 +7,7 @@
 
       <v-card class="pa-5 mt-5">
         <v-row class="ma-1">
-          <v-btn text @click="$router.push({name: 'Login'})">
+          <v-btn text class="caption" @click="$router.push({name: 'Login'})">
             <v-icon left>mdi-arrow-left</v-icon>
             <span>戻る</span>
           </v-btn>

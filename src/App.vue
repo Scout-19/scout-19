@@ -1,13 +1,13 @@
 <template>
   <v-app :style="{background: $vuetify.theme.themes.light.background}">
 
-    <SideBar account="player" v-if="false"/>
-    
+    <ApplicationBar :title="appBarTitle" v-if="drawNavigation"/>
+
     <v-content>
       <router-view/>
     </v-content>
 
-    <BottomNavigation v-if="drawNavigation"/>
+    <BottomNavigation v-if="drawNavigation" v-model="appBarTitle"/>
 
     <v-footer absolute>
       <v-col class="text-center caption">© XXX All rights reserved.</v-col>
@@ -23,19 +23,20 @@ import 'firebase/auth'
 
 import { mapActions } from 'vuex'
 
-import SideBar from '@/components/SideBar'
 import BottomNavigation from '@/components/BottomNavigation'
+import ApplicationBar from '@/components/ApplicationBar'
 
 export default {
   name: 'App',
 
   components: {
-    SideBar,
-    BottomNavigation
+    BottomNavigation,
+    ApplicationBar
   },
 
   data: () => ({
     drawNavigation: false,
+    appBarTitle: ''
   }),
 
   created() {
@@ -63,7 +64,7 @@ export default {
   watch: {
     // judge when change route
     '$route' (to) {
-        this.drawNavigation = to.meta.navigation
+      this.drawNavigation = to.meta.navigation
     }
   },
 };
