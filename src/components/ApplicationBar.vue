@@ -1,38 +1,43 @@
 <template>
-  <div class="about">
+  <div class="app-bar">
     <v-app-bar
       color="primary"
       dark
+      dense
+      app
+      max-height="48px"
     >
-      <v-toolbar-title>SCOUTME</v-toolbar-title>
-
       <v-spacer></v-spacer>
 
-      <v-btn
-        outlined
-        class="ma-1"
-        @click="$router.push({name: 'Login'})"
+      <v-toolbar-title
+        class="font-weight-bold subtitle-1"
+        @click="scroll"
       >
-        ログイン
-      </v-btn>
+      {{title}}
+      </v-toolbar-title>
 
-      <v-btn
-        outlined
-        class="ma-1"
-        @click="$router.push({name: 'Signup'})"
-      >
-        新規登録
-      </v-btn>
-
-      <v-btn
-        outlined
-        class="ma-1"
-        @click="$router.push({name: 'Signup'})"
-      >
-        スカウト関係者はこちら
-      </v-btn>
+      <v-spacer></v-spacer>
     </v-app-bar>
 
     
   </div>
 </template>
+
+
+<script>
+export default {
+  name: 'ApplicationBar',
+
+  props: {
+    title: String
+  },
+
+  methods: {
+    scroll: function() {
+      window.scrollTo({top: 0, behavior: 'smooth'})
+    }
+  }
+
+};
+</script>
+

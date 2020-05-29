@@ -7,6 +7,9 @@ import 'firebase/auth'
 import About from '@/views/About'
 import Login from '@/views/Login'
 import Signup from '@/views/Signup'
+import PasswordReset from '@/views/PasswordReset'
+import EmailVerify from '@/views/EmailVerify'
+import Registration from '@/views/Registration'
 
 import Profile from '@/views/Profile'
 import Message from '@/views/Message'
@@ -41,28 +44,46 @@ const routes = [
     meta: {title: '新規登録'}
   },
   {
+    path: '/resetpw',
+    name: 'PasswordReset',
+    component: PasswordReset,
+    meta: {title: 'パスワードを忘れた方'}
+  },
+  {
+    path: '/emailverify',
+    name: 'EmailVerify',
+    component: EmailVerify,
+    meta: {title: 'メール確認', requiresAuth: true}
+  },
+  {
+    path: '/registration',
+    name: 'Registration',
+    component: Registration,
+    meta: {title: '個人情報入力', requiresAuth: true}
+  },
+  {
     path: '/profile',
     name: 'Profile',
     component: Profile,
-    meta: {title: 'プロフィール', requiresAuth: true}
+    meta: {title: 'プロフィール', requiresAuth: true, navigation: true}
   },
   {
     path: '/message',
     name: 'Message',
     component: Message,
-    meta: {title: 'メッセージ', requiresAuth: true}
+    meta: {title: 'メッセージ', requiresAuth: true, navigation: true}
   },
   {
     path: '/message/:id',
     name: 'MessageRoom',
     component: Message,
-    meta: {title: 'メッセージ', requiresAuth: true}
+    meta: {title: 'メッセージ', requiresAuth: true, navigation: true}
   },
   {
     path: '/search',
     name: 'Search',
     component: Search,
-    meta: {title: '検索', requiresAuth: true}
+    meta: {title: '検索', requiresAuth: true, navigation: true}
   },
   {
     path: '/video',
@@ -74,7 +95,7 @@ const routes = [
     path: '/setting',
     name: 'Setting',
     component: Setting,
-    meta: {title: '設定', requiresAuth: true}
+    meta: {title: '設定', requiresAuth: true, navigation: true}
   },
 ]
 
@@ -92,7 +113,21 @@ router.beforeEach((to, from, next) =>
   if( requiresAuth ) {
     firebase.auth().onAuthStateChanged(user => {
       if(user) {
-        next()
+        // check email verified
+        if(!user.emailVerified) {
+          (to.name == 'EmailVerify') ? next() : next({ name: 'EmailVerify' })
+        }
+        else {
+          // check registerd in firestore
+          firebase.firestore().collection('users').doc(user.uid).get().then(doc => {
+            if(doc.exists) {
+              next()
+            }
+            else {
+              (to.name == 'Registration') ? next() : next({ name: 'Registration' })
+            }
+          })
+        }
       }
       else {
         next({ name: 'Login', query: { redirect: to.name } })
@@ -102,6 +137,9 @@ router.beforeEach((to, from, next) =>
   else {
     next()
   }
+
+  // scroll to top
+  window.scrollTo({top: 0, behavior: 'instant'})
 
   // document title
   var title = to.meta.title
