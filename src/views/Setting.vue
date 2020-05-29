@@ -3,6 +3,16 @@
     <v-container fluid class="pa-5">
       <v-card class="pa-5">
         <v-list>
+          <v-subheader>登録情報変更</v-subheader>
+          <v-list-item>
+            <v-list-item-title>メールアドレス変更</v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title>パスワード変更</v-list-item-title>
+          </v-list-item>
+
+          <v-divider class="my-5"></v-divider>
+
           <v-subheader>SNS連携</v-subheader>
           <v-list-item>
             <v-switch class="mx-2" label="Twitter"></v-switch>

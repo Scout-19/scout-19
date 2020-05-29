@@ -18,6 +18,8 @@
 
 <script>
 import firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/auth'
 
 import { mapActions } from 'vuex'
 
@@ -38,7 +40,7 @@ export default {
 
   created() {
     // first judge
-    this.drawNavigation = this.$router.currentRoute.meta.requiresAuth
+    this.drawNavigation = this.$router.currentRoute.meta.navigation
 
     // set uid to store
     firebase.auth().onAuthStateChanged(user => {
@@ -54,13 +56,14 @@ export default {
   methods: {
     ...mapActions([
       'setUid',
+      'setUserRegisterd'
     ]),
   },
 
   watch: {
     // judge when change route
     '$route' (to) {
-        this.drawNavigation = to.meta.requiresAuth
+        this.drawNavigation = to.meta.navigation
     }
   },
 };

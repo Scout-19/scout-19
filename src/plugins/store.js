@@ -18,7 +18,7 @@ export default new Vuex.Store({
   mutations: {
     setUid: function(state, uid) {
       state.uid = uid
-    }
+    },
   },
   actions: {
     setUid: function(context, uid) {
@@ -26,7 +26,7 @@ export default new Vuex.Store({
     },
     clearUid: function(context) {
       context.commit('setUid', '')
-    }
+    },
   },
   modules: {
   }
