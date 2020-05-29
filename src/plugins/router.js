@@ -12,6 +12,7 @@ import Profile from '@/views/Profile'
 import Message from '@/views/Message'
 import Search from '@/views/Search'
 import Setting from '@/views/Setting'
+import Video from '@/views/Video'
 
 
 Vue.use(VueRouter)
@@ -62,6 +63,12 @@ const routes = [
     name: 'Search',
     component: Search,
     meta: {title: '検索', requiresAuth: true}
+  },
+  {
+    path: '/video',
+    name: 'Video',
+    component: Video,
+    meta: {title: '動画', sidebar:true, requiresAuth: true}
   },
   {
     path: '/setting',

@@ -5,7 +5,7 @@
       color="primary"
       v-if="!dataLoaded"
     ></v-progress-linear>
-    
+
     <v-bottom-navigation
       v-model="selected"
       color="primary"
@@ -45,12 +45,14 @@ export default {
           { title: 'プロフィール', icon: 'mdi-account', route: 'Profile' },
           { title: 'メッセージ', icon: 'mdi-email', route: 'Message' },
           { title: 'チーム検索', icon: 'mdi-school', route: 'Search' },
+          { title: '動画', icon: 'mdi-filmstrip', route: 'Video' },
           { title: '設定', icon: 'mdi-cog', route: 'Setting' },
       ],
       scouter: [
           { title: 'プロフィール', icon: 'mdi-account', route: 'Profile' },
           { title: 'メッセージ', icon: 'mdi-email', route: 'Message' },
           { title: 'プレイヤー検索', icon: 'mdi-charity', route: 'Search' },
+          { title: '動画', icon: 'mdi-filmstrip', route: 'Video' },
           { title: '設定', icon: 'mdi-cog', route: 'Setting' },
       ],
     }
