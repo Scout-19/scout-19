@@ -40,16 +40,9 @@ export default {
    watch: {
      redirect_time: function(value) {
        if (value <= 0) {
-         this.$router.push({name: 'Profile'}).catch(err => {
-           // scroll to top
-           if(err.name == 'NavigationDuplicated') {
-             window.scrollTo({top: 0, behavior: 'smooth'})
-           }
-           else {
-             console.log(err.message)
-           }
-         })
-         this.$emit('input', 'プロフィール')
+        this.$router.push({name: 'Profile'}).catch(err => {
+          console.log(err.message)
+        })
        }
      }
    },

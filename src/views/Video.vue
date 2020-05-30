@@ -2,29 +2,27 @@
   <div class="video">
     <v-container>
       <BasicVideoFrame
-      class='pb-5'
-      :icon='icon'
-      :name='name'
-      :video_path='video_path'
-      :video_title='video_title'
-      :good='good'
-      :comment='comment'
-      :hash_tags='hash_tags'
-      :thumbnail='thumbnail'
+        class='pb-5'
+        :icon='icon'
+        :name='name'
+        :video_path='video_path'
+        :video_title='video_title'
+        :good='good'
+        :comment='comment'
+        :hash_tags='hash_tags'
+        :thumbnail='thumbnail'
       />
     </v-container>
   </div>
 </template>
 
 <script>
+import BasicVideoFrame from '@/components/BasicVideoFrame.vue'
 
 import { mapGetters } from 'vuex'
 
-import BasicVideoFrame from '@/components/BasicVideoFrame.vue'
-
-
 export default {
-  name: 'Movie',
+  name: 'Video',
 
   components: {
     BasicVideoFrame,
