@@ -10,7 +10,7 @@
     <BottomNavigation v-if="drawNavigation" v-model="appBarTitle"/>
 
     <v-footer absolute>
-      <v-col class="text-center caption">© XXX All rights reserved.</v-col>
+      <v-col class="text-center caption">© ScoutMe All rights reserved.</v-col>
     </v-footer>
 
   </v-app>

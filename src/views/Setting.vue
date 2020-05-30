@@ -103,7 +103,7 @@ export default {
 
       var ref = firebase.firestore().collection('users').doc(uid).collection('profile').doc('private')
 
-      ref.update({email: this.mailNotify}).then(() => {
+      ref.update({email_notify: this.mailNotify}).then(() => {
       }, err => {
         alert(err.message)
       })

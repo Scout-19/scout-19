@@ -40,7 +40,9 @@ export default {
    watch: {
      redirect_time: function(value) {
        if (value <= 0) {
-         this.$router.push({name: 'Profile'})
+        this.$router.push({name: 'Profile'}).catch(err => {
+          console.log(err.message)
+        })
        }
      }
    },
