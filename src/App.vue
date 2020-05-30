@@ -65,7 +65,6 @@ export default {
     // judge when change route
     '$route' (to) {
       this.drawNavigation = to.meta.navigation
-      console.log(this.drawNavigation)
     }
   },
 };
