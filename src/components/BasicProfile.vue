@@ -5,7 +5,16 @@
         <v-list-item-avatar
           size="90"
         >
-          <img :src="icon">
+          <img
+            :src="icon"
+            v-if="icon"
+          >
+          <v-icon
+            v-else
+            size="90"
+          >
+            mdi-account-circle
+          </v-icon>
         </v-list-item-avatar>
 
         <v-list-item-content>
@@ -36,6 +45,6 @@ export default {
     location: String,
     bio: String
   }
-  
+
 }
 </script>

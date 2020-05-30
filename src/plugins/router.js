@@ -89,7 +89,7 @@ const routes = [
     path: '/video',
     name: 'Video',
     component: Video,
-    meta: {title: '動画', sidebar:true, requiresAuth: true}
+    meta: {title: '動画', requiresAuth: true, navigation: true}
   },
   {
     path: '/setting',
