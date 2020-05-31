@@ -98,7 +98,7 @@ export default {
           window.scrollTo({top: 0, behavior: 'smooth'})
         }
         else {
-          console.log(err.message)
+          console.log(err)
         }
       })
       this.$emit('input', nav.title)

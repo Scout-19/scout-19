@@ -47,9 +47,11 @@ export default {
     firebase.auth().onAuthStateChanged(user => {
       if(user) {
         this.setUid(user.uid)
+        this.setEmail(user.email)
       }
       else {
         this.setUid('')
+        this.setEmail('')
       }
     })
   },
@@ -57,7 +59,7 @@ export default {
   methods: {
     ...mapActions([
       'setUid',
-      'setUserRegisterd'
+      'setEmail',
     ]),
   },
 

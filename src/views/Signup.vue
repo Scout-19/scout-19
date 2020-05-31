@@ -10,7 +10,7 @@
         <v-row class="ma-1" justify="center">
           <v-text-field
             v-model="email"
-            :rules="emailRules"
+            :rules="util_emailRules"
             label="メールアドレス"
             required
             outlined
@@ -20,7 +20,7 @@
         <v-row class="ma-1" justify="center">
           <v-text-field
             v-model="password"
-            :rules="passwordRules"
+            :rules="util_passwordRules"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showPassword ? 'text' : 'password'"
             @click:append="showPassword = !showPassword"
@@ -33,7 +33,7 @@
         <v-row class="ma-1" justify="center">
           <v-text-field
             v-model="password2"
-            :rules="passwordRules"
+            :rules="util_passwordRules"
             :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showPassword2 ? 'text' : 'password'"
             @click:append="showPassword2 = !showPassword2"
@@ -76,17 +76,10 @@ export default {
 
   data: () => ({
     email: '',
-    emailRules: [
-      v => !!v || 'メールアドレスを入力してください。',
-      v => /.+@.+\..+/.test(v) || 'メールアドレスの形式が無効です。',
-    ],
 
     password: '',
     password2: '',
-    passwordRules: [
-      v => !!v || 'パスワードを入力してください。',
-      v => v.length >= 8 || 'パスワードを8文字以上で入力してください。',
-    ],
+
     showPassword: false,
     showPassword2: false,
 
@@ -117,8 +110,8 @@ export default {
       this.errorMessage = ''
 
       // email rule
-      for(let i = 0; i < this.emailRules.length; i++) {
-        let ret = this.emailRules[i](this.email)
+      for(let i = 0; i < this.util_emailRules.length; i++) {
+        let ret = this.util_emailRules[i](this.email)
         if( ret != true ) {
           this.errorMessage = ret
           return
@@ -126,8 +119,8 @@ export default {
       }
 
       // password rule
-      for(let i = 0; i < this.passwordRules.length; i++) {
-        let ret = this.passwordRules[i](this.password)
+      for(let i = 0; i < this.util_passwordRules.length; i++) {
+        let ret = this.util_passwordRules[i](this.password)
         if( ret != true ) {
           this.errorMessage = ret
           return

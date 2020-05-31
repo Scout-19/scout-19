@@ -16,7 +16,7 @@
         <v-row class="ma-1" justify="center">
             <v-text-field
               v-model="email"
-              :rules="emailRules"
+              :rules="util_emailRules"
               label="メールアドレス"
               required
               outlined
@@ -46,10 +46,6 @@ export default {
 
   data: () => ({
     email: '',
-    emailRules: [
-      v => !!v || 'メールアドレスを入力してください。',
-      v => /.+@.+\..+/.test(v) || 'メールアドレスの形式が無効です。',
-    ],
 
     message: '',
   }),

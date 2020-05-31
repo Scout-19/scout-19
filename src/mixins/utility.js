@@ -1,4 +1,16 @@
 export default {
+
+  data: () => ({
+    util_emailRules: [
+      v => !!v || 'メールアドレスを入力してください。',
+      v => /.+@.+\..+/.test(v) || 'メールアドレスの形式が無効です。',
+    ],
+    util_passwordRules: [
+      v => !!v || 'パスワードを入力してください。',
+      v => v.length >= 8 || 'パスワードを8文字以上で入力してください。',
+    ],
+  }),
+
   methods: {
 
     util_getAge: function(birthday) {
