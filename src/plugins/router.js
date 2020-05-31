@@ -11,6 +11,9 @@ import PasswordReset from '@/views/PasswordReset'
 import EmailVerify from '@/views/EmailVerify'
 import Registration from '@/views/Registration'
 
+import PrivacyPolicy from '@/views/PrivacyPolicy'
+import Terms from '@/views/Terms'
+
 import Profile from '@/views/Profile'
 import Message from '@/views/Message'
 import Search from '@/views/Search'
@@ -60,6 +63,18 @@ const routes = [
     name: 'Registration',
     component: Registration,
     meta: {title: '個人情報入力', requiresAuth: true}
+  },
+  {
+    path: '/privacypolicy',
+    name: 'PrivacyPolicy',
+    component: PrivacyPolicy,
+    meta: {title: 'プライバシーポリシー'}
+  },
+  {
+    path: '/terms',
+    name: 'Terms',
+    component: Terms,
+    meta: {title: '利用規約'}
   },
   {
     path: '/profile',

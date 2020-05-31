@@ -88,11 +88,11 @@
           <v-divider class="my-5"></v-divider>
 
           <v-subheader>その他</v-subheader>
-          <v-list-item @click="$router.push({name: Policy})">
+          <v-list-item @click="openWidhNewWindow('PrivacyPolicy')">
             <v-list-item-title>プライバシーポリシー</v-list-item-title>
             <v-icon>mdi-open-in-new</v-icon>
           </v-list-item>
-          <v-list-item @click="$router.push({name: Policy})">
+          <v-list-item @click="openWidhNewWindow('Terms')">
             <v-list-item-title>利用規約</v-list-item-title>
             <v-icon>mdi-open-in-new</v-icon>
           </v-list-item>
@@ -151,6 +151,11 @@ export default {
   },
 
   methods: {
+
+    openWidhNewWindow: function(name) {
+      var route = this.$router.resolve({name: name});
+      window.open(route.href, '_blank');
+    },
 
     logout: function() {
       firebase.auth().signOut().then(() => {
