@@ -6,6 +6,18 @@
       v-if="!dataLoaded"
     ></v-progress-linear>
     <v-container v-else>
+      <div>
+      <v-card class='pa-5'
+        color='primary'
+        v-if='profile_not_registered'
+      >
+        <v-card-text
+          color='red'
+        >
+          プロフィールが登録されていません。登録しよう！
+        </v-card-text>
+      </v-card>
+      </div>
       <BasicProfile
         class='pb-5'
         :icon='icon'
@@ -49,48 +61,57 @@ export default {
   components: {
     BasicProfile,
     PlayerProfile,
-    Career
+    Career,
   },
 
   data: () => ({
     dataLoaded: false,
 
     icon: '',
-    name: '',
-    sports: '',
-    location: '',
+    name: '名前未設定',
+    sports: '未設定',
+    location: '未設定',
     bio: '',
     birthday: new Date(),
-    sex: '',
+    sex: '未設定',
     height: 0,
     weight: 0,
-    dominant: {hand: '', leg: ''}
+    dominant: {hand: '', leg: ''},
+    profile_not_registered: false
   }),
 
   created() {
     // todo: get from vuex
-    // var uid = this.getUid
-    var uid = 'dbHIC56klkQ40fkHXYV5g3uMP1J2'
-
+    var uid = this.getUid
     var ref = firebase.firestore().collection('users').doc(uid).collection('profile').doc('public')
 
     ref.get().then(doc => {
       if (doc.exists)
       {
         var data = doc.data()
-        this.icon = data.icon
-        this.name = data.last_name + ' ' +  data.first_name
-        this.sports = data.sports
-        this.location = data.location
-        this.bio = data.bio
+        if (Object.keys(data).length)
+        {
+          this.icon = data.icon
+          this.name = data.last_name + ' ' +  data.first_name
+          this.sports = data.sports
+          this.location = data.location
+          this.bio = data.bio
+          if ("birthday" in data)
+          {
+            this.birthday = data.birthday.toDate()
+          }
+          this.sex = data.sex
+          this.height = data.height
+          this.weight = data.weight
+          this.dominant = {hand: data.dominant_hand, leg: data.dominant_leg}
 
-        this.birthday = data.birthday.toDate()
-        this.sex = data.sex
-        this.height = data.height
-        this.weight = data.weight
-        this.dominant = {hand: data.dominant_hand, leg: data.dominant_leg}
-
-        this.dataLoaded = true
+          this.dataLoaded = true
+        }
+        else
+        {
+          this.profile_not_registered = true
+          this.dataLoaded = true
+        }
       }
     }, err => {
       alert(err.message)
