@@ -20,7 +20,6 @@
               label="メールアドレス"
               required
               outlined
-              @keydown.enter="enterKeyDown"
             ></v-text-field>
         </v-row>
 
@@ -53,7 +52,7 @@ export default {
   methods: {
     reset: function() {
       firebase.auth().sendPasswordResetEmail(this.email, {
-          url: location.origin + this.$router.resolve({name: 'Profile'}).href,
+        url: location.origin + this.$router.resolve({name: 'Profile'}).href,
       }).then(() => {
         this.message = "メールを送信しました。"
       }, err => {

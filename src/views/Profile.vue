@@ -113,6 +113,10 @@ export default {
           this.dataLoaded = true
         }
       }
+      else
+      {
+        this.dataLoaded = true
+      }
     }, err => {
       alert(err.message)
     })
