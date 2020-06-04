@@ -2,7 +2,7 @@
   <div class="search">
     <v-container fluid class="pa-5">
       <v-row>
-        <v-col>
+        <v-col cols=12 sm=6 md=3>
           <v-combobox
             v-model="prefectures"
             :items="prefecturesList"
@@ -13,7 +13,7 @@
           ></v-combobox>
         </v-col>
 
-        <v-col>
+        <v-col cols=12 sm=6 md=3>
           <v-combobox
             v-model="grade"
             :items="gradeList"
@@ -24,7 +24,7 @@
           ></v-combobox>
         </v-col>
 
-        <v-col>
+        <v-col cols=12 sm=6 md=3>
           <v-combobox
             v-model="sports"
             :items="sportsList"
@@ -35,9 +35,20 @@
           ></v-combobox>
         </v-col>
 
+        <v-col cols=12 sm=6 md=3>
+          <v-combobox
+            v-model="positions"
+            :items="positionsList"
+            label="ポジション"
+            multiple
+            chips
+            clearable
+          ></v-combobox>
+        </v-col>
+
         <v-col>
-          <v-btn icon @click="search" :disabled="!searchEnable">
-            <v-icon>mdi-magnify</v-icon>
+          <v-btn color="primary" block rounded @click="search" :disabled="!searchEnable">
+            <v-icon>mdi-magnify</v-icon>検索
           </v-btn>
         </v-col>
       </v-row>
@@ -46,28 +57,21 @@
         <v-container fluid>
           <v-list v-if="searched" three-line>
             <v-subheader>検索結果 ({{foundTeams}} チーム)</v-subheader>
-
-              <v-row
+              <v-list-item
+                @click="console.log('team')"
+                class="pa-2 mx-5"
                 v-for="(team, i) in teams"
                 :key="i"
               >
-                <v-list-item
-                  @click="console.log('team')"
-                  class="pa-2"
-                >
-                  <v-list-item-avatar>
-                    <v-img :src="team.icon"></v-img>
-                  </v-list-item-avatar>
+                <v-list-item-avatar>
+                  <v-img :src="team.icon"></v-img>
+                </v-list-item-avatar>
 
-                  <v-list-item-content>
-                    <v-list-item-title v-text="team.name"></v-list-item-title>
-                    <v-list-item-subtitle>{{team.bio}}</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-
-                <v-divider class="ml-1"></v-divider>
-
-              </v-row>
+                <v-list-item-content>
+                  <v-list-item-title v-text="team.name"></v-list-item-title>
+                  <v-list-item-subtitle>{{team.bio}}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
           </v-list>
         </v-container>
       </v-row>
@@ -108,10 +112,16 @@ export default {
       'バスケットボール'
     ],
 
+    positions: [],
+    positionsList: [
+      'フォワード',
+      'キーパー',
+    ],
+
     teams: [
-      { name: 'XXX中学校', icon: 'https://randomuser.me/api/portraits/men/80.jpg', bio: 'すごい学校です' },
-      { name: 'YYY中学校', icon: 'https://randomuser.me/api/portraits/men/82.jpg', bio: 'すごい学校です' },
-      { name: 'ZZZ中学校', icon: 'https://randomuser.me/api/portraits/men/84.jpg', bio: 'すごい学校です' },
+      { name: 'XXX中学校', icon: 'https://randomuser.me/api/portraits/men/80.jpg', bio: 'ぜひ練習に参加してみてください' },
+      { name: 'YYY中学校', icon: 'https://randomuser.me/api/portraits/men/82.jpg', bio: 'ぜひ練習に参加してみてください' },
+      { name: 'ZZZ中学校', icon: 'https://randomuser.me/api/portraits/men/84.jpg', bio: 'ぜひ練習に参加してみてください' },
     ],
   }),
 

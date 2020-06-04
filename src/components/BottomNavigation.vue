@@ -45,7 +45,6 @@ export default {
           { title: 'プロフィール', icon: 'mdi-account', route: 'Profile' },
           { title: 'メッセージ', icon: 'mdi-email', route: 'Message' },
           { title: 'チーム検索', icon: 'mdi-school', route: 'Search' },
-          { title: '動画', icon: 'mdi-filmstrip', route: 'Video' },
           { title: '設定', icon: 'mdi-cog', route: 'Setting' },
       ],
       scouter: [

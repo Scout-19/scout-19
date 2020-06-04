@@ -37,8 +37,8 @@
       <Career
         class='pb-5'
         :careers="[
-          {year: 2010, month: 4, content: '〇〇小学校でフォワード'},
-          {year: 2013, month: 4, content: '△△中学校でフォワードおおおおおおおおおおおおおお'},
+          {year: 2010, month: 4, content: '〇〇小学校でフォワードを経験'},
+          {year: 2013, month: 4, content: '△△中学校でフォワードを経験'},
         ]"
       />
     </v-container>
