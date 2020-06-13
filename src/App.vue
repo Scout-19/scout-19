@@ -9,8 +9,17 @@
 
     <BottomNavigation v-if="drawNavigation" v-model="appBarTitle"/>
 
-    <v-footer absolute>
-      <v-col class="text-center caption">© ScoutMe All rights reserved.</v-col>
+    <v-footer padless>
+      <v-col class="text-center caption">
+        <v-row justify="center">
+          <v-btn text class="mx-1 text-center caption">プライバシーポリシー</v-btn>
+          <v-btn text class="mx-1 text-center caption">利用規約</v-btn>
+          <v-btn text class="mx-1 text-center caption">お問い合わせ</v-btn>
+        </v-row>
+        <v-row justify="center">
+        © ScoutMe All rights reserved.
+        </v-row>
+      </v-col>
     </v-footer>
 
   </v-app>

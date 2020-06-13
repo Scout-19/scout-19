@@ -14,45 +14,29 @@
           </v-card-text>
         </v-card>
       </div>
-      <BasicProfile class='pb-5'
-                    :icon='icon'
-                    :name='name'
-                    :sports='sports'
-                    :location='location'
-                    :bio='bio' />
-      <PlayerProfile class='pb-5'
-                     :birthday='birthday'
-                     :sex='sex'
-                     :height='height'
-                     :weight='weight'
-                     :dominant='dominant' />
-      <Career class='pb-5' :careers="[
-            {year: 2010, month: 4, content: '〇〇小学校でフォワード'},
-            {year: 2013, month: 4, content: '△△中学校でフォワードおおおおおおおおおおおおおお'},
-          ]" />
-
-      <UserVideos :videos='videos' />
-
-
-      <FileUpload/>
-      <div id="app">
-        <label for="input-video">{{ isLoading ? '読み込み中...' : '動画を選択'}}</label>
-        <input id="input-video" type="file" accept="video/mp4,video/x-m4v" @change="handleFileSelect">
-        <video controls v-if="src">
-      <source :src="src" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
-    </video>
-        <div class="thumbnail-list">
-          <transition-group name="fade">
-            <img class="thumbnail"
-                 v-for="(thumbnail, index) in thumbnails"
-                 :key="'thumbnail' + index"
-                 :src="thumbnail"
-                 :class="{ active: index === selected }"
-                 @click="selected = index">
-          </transition-group>
-        </div>
-      </div>
-
+      <BasicProfile
+        class='pb-5'
+        :icon='icon'
+        :name='name'
+        :sports='sports'
+        :location='location'
+        :bio='bio'
+      />
+      <PlayerProfile
+        class='pb-5'
+        :birthday='birthday'
+        :sex='sex'
+        :height='height'
+        :weight='weight'
+        :dominant='dominant'
+      />
+      <Career
+        class='pb-5'
+        :careers="[
+          {year: 2010, month: 4, content: '〇〇小学校でフォワードを経験'},
+          {year: 2013, month: 4, content: '△△中学校でフォワードを経験'},
+        ]"
+      />
     </v-container>
   </div>
 

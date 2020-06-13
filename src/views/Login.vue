@@ -52,6 +52,11 @@
           <v-btn text class="caption" @click="$router.push({name: 'PasswordReset'})">
             パスワードをお忘れですか？
           </v-btn>
+
+          <v-btn text class="caption" @click="testLogin">
+            テスト用ログイン
+          </v-btn>
+
         </v-row>
       </v-card>
     </v-container>
@@ -90,6 +95,14 @@ export default {
   },
 
   methods: {
+
+    // !!! test loging !!!
+    testLogin: function() {
+      this.email = 't2k.0207@gmail.com'
+      this.password = '00000000'
+      this.login()
+    },
+
     enterKeyDown: function(e) {
       // enter key (zenkaku = 229)
       if(e.keyCode == 13) {
