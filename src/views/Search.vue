@@ -26,17 +26,6 @@
 
         <v-col cols=12 sm=6 md=3>
           <v-combobox
-            v-model="sports"
-            :items="sportsList"
-            label="スポーツ"
-            multiple
-            chips
-            clearable
-          ></v-combobox>
-        </v-col>
-
-        <v-col cols=12 sm=6 md=3>
-          <v-combobox
             v-model="positions"
             :items="positionsList"
             label="ポジション"
@@ -46,6 +35,16 @@
           ></v-combobox>
         </v-col>
 
+        <v-col cols=12 sm=6 md=3>
+          <v-combobox
+            v-model="type"
+            :items="typeList"
+            label="検索種別"
+            chips
+          ></v-combobox>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col>
           <v-btn color="primary" block rounded @click="search" :disabled="!searchEnable">
             <v-icon>mdi-magnify</v-icon>検索
@@ -91,9 +90,13 @@ export default {
 
     prefectures: [],
     prefecturesList: [
-      '北海道',
-      '青森県',
-      '岩手県'
+      "北海道","青森県","岩手県","宮城県","秋田県","山形県","福島県",
+      "茨城県","栃木県","群馬県","埼玉県","千葉県","東京都","神奈川県",
+      "新潟県","富山県","石川県","福井県","山梨県","長野県","岐阜県",
+      "静岡県","愛知県","三重県","滋賀県","京都府","大阪府","兵庫県",
+      "奈良県","和歌山県","鳥取県","島根県","岡山県","広島県","山口県",
+      "徳島県","香川県","愛媛県","高知県","福岡県","佐賀県","長崎県",
+      "熊本県","大分県","宮崎県","鹿児島県","沖縄県"
     ],
 
     grade: [],
@@ -105,18 +108,25 @@ export default {
       'プロ'
     ],
 
-    sports: [],
-    sportsList: [
-      'サッカー',
-      '野球',
-      'バスケットボール'
-    ],
 
     positions: [],
     positionsList: [
-      'フォワード',
-      'キーパー',
+      'FW(全て)',
+      'FW(センター)',
+      'FW(右)',
+      'MF(全て)',
+      'MF(ボランチ)',
+      'MF(右)',
+      'MF(左)',
+      'MF(トップ下)',
+      'DF(全て)',
+      'DF(右)',
+      'DF(左)',
+      'GK',
     ],
+
+    type: "プロフィール",
+    typeList: [ 'プロフィール', '動画' ],
 
     teams: [
       { name: 'XXX中学校', icon: 'https://randomuser.me/api/portraits/men/80.jpg', bio: 'ぜひ練習に参加してみてください' },
@@ -130,7 +140,7 @@ export default {
       'getUid',
     ]),
     searchEnable: function() {
-      return this.prefectures.length > 0 || this.grade.length > 0 || this.sports.length > 0
+      return this.prefectures.length > 0 || this.grade.length > 0
     },
     foundTeams: function() {
       return this.teams.length
@@ -140,7 +150,6 @@ export default {
   methods: {
     search: function() {
       this.searched = true
-      console.log(this.sports)
     }
   },
 }
