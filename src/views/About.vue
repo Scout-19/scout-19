@@ -14,7 +14,7 @@
     </div>
 
     <v-container class="mt-10">
-        
+
       <v-row>
         <v-col>
           <v-row justify="center">
@@ -43,7 +43,7 @@
           <v-row justify="center">
             <p class="secondary--text text-center display-1 font-weight-black">スカウト関係者の方へ</p>
           </v-row>
-          
+
           <v-row justify="center">
             <p>スカウト関係者の活動を支援します。</p>
           </v-row>
@@ -63,7 +63,7 @@
 
     </v-container>
 
-    
+
   </div>
 </template>
 
@@ -118,6 +118,7 @@ export default {
 }
 .service-subtitle {
   position: absolute;
+  width: fit-content;
   left: 50%;
   color: white;
   -ms-transform: translate(-50%,-50%);
