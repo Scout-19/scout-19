@@ -5,8 +5,7 @@
                        color="primary"
                        v-if="!dataLoaded"></v-progress-linear>
 
-    <v-container v-else fluid
-                 class="pa-5">
+    <v-container v-else fluid class="pa-5">
       <v-row>
         <!-- User list !-->
         <v-col cols=3>
@@ -18,21 +17,21 @@
                                 :items="chatrooms"
                                 item-height="64"
                                 height="70vh">
-          <template v-slot="{item}">
-            <v-list-item
-              @click="$router.push({name: 'MessageRoom', params: {id: item.id}}, () => {})"
-            >
-              <v-list-item-avatar>
-                <img :src="item.opponent.icon">
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>{{item.opponent.last_name + ' ' + item.opponent.first_name}}</v-list-item-title>
-                <v-list-item-subtitle>{{item.latest.content}}</v-list-item-subtitle>
-                <v-list-item-subtitle class='overline'>{{util_getDateTimeString(item.latest.timestamp.toDate())}}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+                <template v-slot="{item}">
+                <v-list-item
+                  @click="$router.push({name: 'MessageRoom', params: {id: item.id}}, () => {})"
+                >
+                  <v-list-item-avatar>
+                    <img :src="item.opponent.icon">
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title>{{item.opponent.last_name + ' ' + item.opponent.first_name}}</v-list-item-title>
+                    <v-list-item-subtitle>{{item.latest.content}}</v-list-item-subtitle>
+                    <v-list-item-subtitle class='overline'>{{util_getDateTimeString(item.latest.timestamp.toDate())}}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
 
-          </template>
+              </template>
               </v-virtual-scroll>
             </v-list-item-group>
 
@@ -45,34 +44,33 @@
             <!-- Messages !-->
             <v-col cols=12>
               <v-row>
-              <v-col>
-              <v-virtual-scroll bench="10"
-                                :items="messages"
-                                height="60vh"
-                                item-height="100px"
-                                >
-                <template v-slot="{item}">
-                  <!-- One message !-->
-                    <v-list-item two-line :class="`text-${sendByMe(item) ? 'right' : 'left'}`">
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            <v-avatar left v-if="!sendByMe(item)" size=30 class="message-avatar">
-                              <img :src="selectedUser.icon">
-                            </v-avatar>
-                            <v-chip class="message-chip" large>
-                            <div class="one-message">{{item.content}}</div>
-                            </v-chip>
-                          </v-list-item-title>
-                          <v-list-item-subtitle>
-                            <div class="message-date">
-                              {{util_getDateTimeString(item.timestamp.toDate())}}
-                            </div>
-                          </v-list-item-subtitle>
-                        </v-list-item-content>
-                      </v-list-item>
-                </template>
-              </v-virtual-scroll>
-            </v-col>
+                <v-col>
+                  <v-virtual-scroll bench="10"
+                                    :items="messages"
+                                    height="60vh"
+                                    item-height="100px">
+                    <template v-slot="{item}">
+                      <!-- One message !-->
+                        <v-list-item two-line :class="`text-${sendByMe(item) ? 'right' : 'left'}`">
+                            <v-list-item-content>
+                              <v-list-item-title>
+                                <v-avatar left v-if="!sendByMe(item)" size=30 class="message-avatar">
+                                  <img :src="selectedUser.icon">
+                                </v-avatar>
+                                <v-chip class="message-chip" large>
+                                <div class="one-message">{{item.content}}</div>
+                                </v-chip>
+                              </v-list-item-title>
+                              <v-list-item-subtitle>
+                                <div class="message-date">
+                                  {{util_getDateTimeString(item.timestamp.toDate())}}
+                                </div>
+                              </v-list-item-subtitle>
+                            </v-list-item-content>
+                          </v-list-item>
+                    </template>
+                  </v-virtual-scroll>
+                </v-col>
               </v-row>
             </v-col>
             <!-- Send Message Area !-->
@@ -289,28 +287,29 @@
 </script>
 
 <style>
-.message-avatar {
-  padding-left: 20px;
-  padding-right: 20px;
-}
 
-.one-message {
-  width: 100%;
-  white-space: pre-line;
-  word-break: break-all;
-}
+  .message-avatar {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 
-.v-virtual-scroll__item {
-  position: static !important;
-}
+  .one-message {
+    width: 100%;
+    white-space: pre-line;
+    word-break: break-all;
+  }
 
-.message-chip {
-  height: auto !important;
-  width: auto;
-  min-width: 20%;
-}
-.message-date {
-  padding-left: 50px
-}
+  .v-virtual-scroll__item {
+    position: static !important;
+  }
+
+  .message-chip {
+    height: auto !important;
+    width: auto;
+    min-width: 20%;
+  }
+  .message-date {
+    padding-left: 50px;
+  }
 
 </style>
