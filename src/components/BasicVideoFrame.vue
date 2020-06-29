@@ -6,13 +6,9 @@
               class="ma-3 pa-6"
               outlined
               tile
-              :elevation="hover ? 16 : 2"
-              >
-        <v-card-text
-          @click.stop="go_to_the_player_profile_page()"
-        >
-          <v-avatar left
-                    size="30">
+              :elevation="hover ? 16 : 2">
+        <v-card-text @click.stop="go_to_the_player_profile_page()">
+          <v-avatar left size="30">
             <img :src="icon" v-if="icon">
             <v-icon v-else>mdi-account-circle</v-icon>
           </v-avatar>
@@ -52,22 +48,13 @@
                 persistent
                 no-click-animation>
         <v-card class="ma-3 pa-6" outlined tile>
-          <v-card-text
-            @click.stop="go_to_the_player_profile_page()"
-          >
-            <v-avatar left
-                      size="30">
+          <v-card-text @click.stop="go_to_the_player_profile_page()">
+            <v-avatar left size="30">
               <img :src="icon" v-if="icon">
               <v-icon v-else>mdi-account-circle</v-icon>
             </v-avatar>
             {{name}}
-            <v-btn
-              @click.stop="close_dialog()"
-              absolute
-              right
-              icon
-              large
-            >
+            <v-btn @click.stop="close_dialog()" absolute right icon large>
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-card-text>
@@ -77,7 +64,7 @@
                    controls
                    width=100%
                    height=100%>
-      </video>
+        </video>
           </v-list-item>
 
           <v-card-actions>
@@ -135,7 +122,7 @@
       },
       go_to_the_player_profile_page() {
         this.contributor
-        this.$router.push({name: 'Profile', params: { uid: this.contributor }}, () => {})
+        this.$router.push({ name: 'Profile', params: { uid: this.contributor } }, () => {})
       }
     }
   }
