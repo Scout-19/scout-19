@@ -184,7 +184,7 @@
       sexList: ['男性', '女性'],
 
       type: 'プロフィール',
-      typeList: ['プロフィール', '動画'],
+      typeList: ['プロフィール'],
 
       teams: [
         {
