@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     uid: '',
     email: '',
+    searchResult: { 'type': '', 'results': null }
   },
   getters: {
     getUid: function(state) {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     getEmail: function(state) {
       return state.email
     },
+    getSearchResult: function(state) {
+      return state.searchResult
+    },
   },
   mutations: {
     setUid: function(state, uid) {
@@ -26,6 +30,12 @@ export default new Vuex.Store({
     setEmail: function(state, email) {
       state.email = email
     },
+    setSearchResult: function(state, results) {
+      state.searchResult = results
+    },
+    clearSearchResult: function(state) {
+      state.searchResult = { 'type': '', 'results': {}}
+    }
   },
   actions: {
     setUid: function(context, uid) {
@@ -34,6 +44,12 @@ export default new Vuex.Store({
     setEmail: function(context, email) {
       context.commit('setEmail', email)
     },
+    setSearchResult: function(context, results) {
+      context.commit('setSearchResult', results)
+    },
+    clearSearchResult: function(context) {
+      context.commit('clearSearchResult')
+    }
   },
   modules: {
   }

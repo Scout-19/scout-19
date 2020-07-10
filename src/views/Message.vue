@@ -126,7 +126,10 @@
         .doc('ids')
 
       this.unsubscribe_user_chatroom_ids = ref.onSnapshot(doc => {
-        this.reloadChatrooms(doc.data().ids)
+        if (doc.data())
+        {
+          this.reloadChatrooms(doc.data().ids)
+        }
       })
     },
 
@@ -152,9 +155,7 @@
 
     methods: {
       add_room: function() {
-        console.log('kita')
         this.chatrooms.push(this.chatrooms[0])
-        console.log(this.chatrooms)
       },
       sendByMe: function(message) {
         return message.user_id == this.getUid
@@ -223,7 +224,6 @@
                           latest: data.latest,
                           opponent: doc.data()
                         })
-                        console.log(this.chatrooms[0])
                       }
                     })
 

@@ -13,30 +13,10 @@
         </v-col>
 
         <v-col cols=12 sm=6 md=3>
-          <v-range-slider v-model="ageRange" max=100 min=0 hide-details
-                          class="align-center"
-                          style="margin-top: 12px;">
-            <template v-slot:prepend>
-                              <v-text-field
-                                :value="ageRange[0]"
-                                class="mt-0 pt-0"
-                                type="number"
-                                style="width: 60px"
-                                label="年齢"
-                                @change="$set(ageRange, 0, $event)"
-                              ></v-text-field>
-                            </template>
-            <template v-slot:append>
-                              <v-text-field
-                                :value="ageRange[1]"
-                                class="mt-0 pt-0"
-                                label=""
-                                type="number"
-                                style="width: 60px"
-                                @change="$set(ageRange, 1, $event)"
-                              ></v-text-field>
-                            </template>
-          </v-range-slider>
+          <v-select v-model="grade"
+                    :items="gradesList"
+                    label="年代">
+          </v-select>
         </v-col>
 
         <v-col cols=12 sm=6 md=3 v-if="account_type=='team'">
@@ -98,6 +78,7 @@
 <script>
 
   import { mapGetters } from 'vuex'
+  import { mapActions } from 'vuex'
   import firebase from 'firebase/app'
   import 'firebase/firestore'
   import BasicVideoFrame from '@/components/BasicVideoFrame.vue'
@@ -162,19 +143,29 @@
         '沖縄県'
       ],
 
-      ageRange: [14, 18],
+      grade: '',
+      gradesList: [
+        '6歳以下',
+        '小学校',
+        '中学校',
+        '高校',
+        '大学',
+        '社会人',
+        'プロ',
+      ],
 
       positions: [],
       positionsList: [
-        'FW(全て)',
+        'FW',
         'FW(センター)',
         'FW(右)',
-        'MF(全て)',
+        'MF',
         'MF(ボランチ)',
         'MF(右)',
         'MF(左)',
         'MF(トップ下)',
-        'DF(全て)',
+        'DF',
+        'DF(センター)',
         'DF(右)',
         'DF(左)',
         'GK'
@@ -186,41 +177,23 @@
       type: 'プロフィール',
       typeList: ['プロフィール'],
 
-      teams: [
-        {
-          name: 'XXX中学校',
-          icon: 'https://randomuser.me/api/portraits/men/80.jpg',
-          bio: 'ぜひ練習に参加してみてください'
-        },
-        {
-          name: 'YYY中学校',
-          icon: 'https://randomuser.me/api/portraits/men/82.jpg',
-          bio: 'ぜひ練習に参加してみてください'
-        },
-        {
-          name: 'ZZZ中学校',
-          icon: 'https://randomuser.me/api/portraits/men/84.jpg',
-          bio: 'ぜひ練習に参加してみてください'
-        }
-      ],
       videos: [],
       profiles: []
     }),
 
     computed: {
-      ...mapGetters(['getUid']),
+      ...mapGetters([
+        'getUid',
+        'getSearchResult'
+      ]),
       searchEnable: function() {
         return (
-          this.prefecture != '' ||
-          this.ageRange[0] != 0 ||
-          this.ageRange[1] != 0 ||
+          this.prefecture ||
+          this.grade ||
           this.positions.length > 0 ||
-          this.sex != ''
+          this.sex || ''
         )
       },
-      foundTeams: function() {
-        return this.teams.length
-      }
     },
     created() {
       var uid = this.getUid
@@ -250,14 +223,32 @@
           alert(err.message)
         }
       )
+
+      //get search results from vuex
+      var results = this.getSearchResult
+      console.log(results)
+      if (results.type == 'profile') {
+        this.profiles = results.results
+        this.searched = true
+      }
+      else if(results.type == 'video') {
+        this.videos = results.results
+        this.searched = true
+      }
+
     },
     methods: {
+      ...mapActions([
+        'setSearchResult',
+        'clearSearchResult'
+      ]),
       search: function() {
         // initialize
         this.videos = []
         this.profiles = []
-
         this.searched = true
+
+        this.clearSearchResult()
 
         // make custom query.
         var ref = firebase.firestore().collection('users')
@@ -269,12 +260,8 @@
           ref = ref.where('profile.location', '==', this.prefecture)
         }
 
-        if (this.ageRange[0] != 0) {
-          ref = ref.where('profile.age', '>=', this.ageRange[0])
-        }
-
-        if (this.ageRange[1] != 0) {
-          ref = ref.where('profile.age', '<=', this.ageRange[1])
+        if (this.grade) {
+          ref = ref.where('profile.grade', '==', this.grade)
         }
 
         if (this.sex) {
@@ -314,6 +301,12 @@
             }
           })
         })
+        if (this.type == '動画') {
+          this.setSearchResult({'type':'video', 'results': this.videos})
+        }
+        else {
+          this.setSearchResult({'type':'profile', 'results': this.profiles})
+        }
       }
     }
   }
