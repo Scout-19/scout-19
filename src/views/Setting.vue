@@ -26,7 +26,6 @@
             <v-list-item-title :class="changeEmailSuccess ? 'primary--text' : 'error--text'" class="caption">{{changeEmailMessage}}</v-list-item-title>
           </v-list-item>
 
-
           <v-list-item @click="changePasswordOpen">
             <v-list-item-title>パスワード変更</v-list-item-title>
             <v-icon>mdi-pencil</v-icon>
@@ -100,8 +99,22 @@
             <v-list-item-title>お問い合わせ</v-list-item-title>
             <v-icon>mdi-open-in-new</v-icon>
           </v-list-item>
-          <v-list-item @click="$router.push({name: Policy})">
-            <v-list-item-title>退会</v-list-item-title>
+
+          <v-list-item>
+            <v-dialog v-model="deleteUserDialog" persistent max-width="500">
+              <template v-slot:activator="{ on, attrs }">
+                <v-list-item-title color="primary" dark v-bind="attrs" v-on="on">退会</v-list-item-title>
+              </template>
+              <v-card>
+                <v-card-title class="headline">アカウントの削除</v-card-title>
+                <v-card-text>登録されたアカウントデータが全て削除され、元には戻りません。よろしいですか？</v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn text @click="deleteUserDialog = false">キャンセル</v-btn>
+                  <v-btn text @click="deleteUserDialog = false; deleteUser()">削除</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-list-item>
 
           <v-divider class="my-5"></v-divider>
@@ -109,7 +122,6 @@
           <v-list-item>
             <v-btn block @click='logout' color="secondary">ログアウト</v-btn>
           </v-list-item>
-
         </v-list>
       </v-card>
     </v-container>
@@ -141,6 +153,8 @@ export default {
     showPassword: false,
     showPassword2: false,
 
+    // 退会ダイアログ表示フラグ
+    deleteUserDialog: false,
   }),
 
   computed: {
@@ -220,15 +234,35 @@ export default {
       }
 
       // change password
-      firebase.auth().currentUser.updatePassword(this.password).then(() => {
-        this.changePasswordMessage = "パスワードの変更に成功しました。"
-        this.changePasswordSuccess = true
-        this.changePassword = false
-      }, err => {
-        this.changePasswordMessage = err.message
-        this.changePasswordSuccess = false
-      });
-    }
+      firebase
+        .auth()
+        .currentUser.updatePassword(this.password)
+        .then(
+          () => {
+            this.changePasswordMessage = "パスワードの変更に成功しました。";
+            this.changePasswordSuccess = true;
+            this.changePassword = false;
+          },
+          (err) => {
+            this.changePasswordMessage = err.message;
+            this.changePasswordSuccess = false;
+          }
+        );
+    },
+
+    // 退会用ユーザ
+    deleteUser: function () {
+      var user = firebase.auth().currentUser;
+      user
+        .delete()
+        .then(function () {
+          // User deleted.
+        })
+        .catch(function (error) {
+          // An error happened.
+          console.log(error);
+        });
+    },
   },
 
   watch: {
