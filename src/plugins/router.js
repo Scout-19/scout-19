@@ -19,6 +19,7 @@ import Message from '@/views/Message'
 import Search from '@/views/Search'
 import Setting from '@/views/Setting'
 import Video from '@/views/Video'
+import Contact from '@/views/Contact'
 
 
 Vue.use(VueRouter)
@@ -27,7 +28,7 @@ const routes = [
   {
     path: '/',
     name: 'Root',
-    redirect: {name: 'About'},
+    redirect: { name: 'About' },
   },
   {
     path: '/about',
@@ -38,80 +39,86 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
-    meta: {title: 'ログイン'}
+    meta: { title: 'ログイン' }
   },
   {
     path: '/signup',
     name: 'Signup',
     component: Signup,
-    meta: {title: '新規登録'}
+    meta: { title: '新規登録' }
   },
   {
     path: '/resetpw',
     name: 'PasswordReset',
     component: PasswordReset,
-    meta: {title: 'パスワードを忘れた方'}
+    meta: { title: 'パスワードを忘れた方' }
   },
   {
     path: '/emailverify',
     name: 'EmailVerify',
     component: EmailVerify,
-    meta: {title: 'メール確認', requiresAuth: true}
+    meta: { title: 'メール確認', requiresAuth: true }
   },
   {
     path: '/registration',
     name: 'Registration',
     component: Registration,
-    meta: {title: '個人情報入力', requiresAuth: true}
+    meta: { title: '個人情報入力', requiresAuth: true }
   },
   {
     path: '/privacypolicy',
     name: 'PrivacyPolicy',
     component: PrivacyPolicy,
-    meta: {title: 'プライバシーポリシー'}
+    meta: { title: 'プライバシーポリシー' }
   },
   {
     path: '/terms',
     name: 'Terms',
     component: Terms,
-    meta: {title: '利用規約'}
+    meta: { title: '利用規約' }
   },
   {
     path: '/profile',
     name: 'Profile',
     component: Profile,
-    meta: {title: 'プロフィール', requiresAuth: true, navigation: true}
+    meta: { title: 'プロフィール', requiresAuth: true, navigation: true }
   },
   {
     path: '/message',
     name: 'Message',
     component: Message,
-    meta: {title: 'メッセージ', requiresAuth: true, navigation: true}
+    meta: { title: 'メッセージ', requiresAuth: true, navigation: true }
   },
   {
     path: '/message/:id',
     name: 'MessageRoom',
     component: Message,
-    meta: {title: 'メッセージ', requiresAuth: true, navigation: true}
+    meta: { title: 'メッセージ', requiresAuth: true, navigation: true }
   },
   {
     path: '/search',
     name: 'Search',
     component: Search,
-    meta: {title: '検索', requiresAuth: true, navigation: true}
+    meta: { title: '検索', requiresAuth: true, navigation: true }
   },
   {
     path: '/video',
     name: 'Video',
     component: Video,
-    meta: {title: '動画', requiresAuth: true, navigation: true}
+    meta: { title: '動画', requiresAuth: true, navigation: true }
   },
   {
     path: '/setting',
     name: 'Setting',
     component: Setting,
-    meta: {title: '設定', requiresAuth: true, navigation: true}
+    meta: { title: '設定', requiresAuth: true, navigation: true }
   },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: Contact,
+    meta: { title: '問い合わせ', requiresAuth: true, navigation: true }
+  }
 ]
 
 const router = new VueRouter({
@@ -120,22 +127,21 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) =>
-{
+router.beforeEach((to, from, next) => {
   // request auth
   var requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
-  if( requiresAuth ) {
+  if (requiresAuth) {
     firebase.auth().onAuthStateChanged(user => {
-      if(user) {
+      if (user) {
         // check email verified
-        if(!user.emailVerified) {
+        if (!user.emailVerified) {
           (to.name == 'EmailVerify') ? next() : next({ name: 'EmailVerify' })
         }
         else {
           // check registerd in firestore
           firebase.firestore().collection('users').doc(user.uid).get().then(doc => {
-            if(doc.exists) {
+            if (doc.exists) {
               next()
             }
             else {
@@ -154,12 +160,12 @@ router.beforeEach((to, from, next) =>
   }
 
   // scroll to top
-  window.scrollTo({top: 0, behavior: 'instant'})
+  window.scrollTo({ top: 0, behavior: 'instant' })
 
   // document title
   var title = to.meta.title
 
-  if( title ) {
+  if (title) {
     document.title = title + ' | SCOUTME'
   }
   else {
